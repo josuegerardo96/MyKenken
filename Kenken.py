@@ -13,7 +13,6 @@ vPrincipal = tk.Tk()
 vPrincipal.title("Kenken")
 vPrincipal.geometry("800x630")
 vPrincipal.config(bg="#F7DC6F")
-
 #...........................................................................GLOBALES......................................................................... 
 mixer.init()
 avrirConfig = open('kenken_configuracion.dat','rb')
