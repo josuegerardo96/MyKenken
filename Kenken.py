@@ -8,7 +8,7 @@ from tkinter import StringVar
 import random
 import pygame
 from pygame import mixer
-
+#Esto es solo una prueba
 vPrincipal = tk.Tk()
 vPrincipal.title("Kenken")
 vPrincipal.geometry("800x630")
