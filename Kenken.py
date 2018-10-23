@@ -8,11 +8,12 @@ from tkinter import StringVar
 import random
 import pygame
 from pygame import mixer
-#Esto es solo una prueba
+
 vPrincipal = tk.Tk()
 vPrincipal.title("Kenken")
 vPrincipal.geometry("800x630")
 vPrincipal.config(bg="#F7DC6F")
+
 #...........................................................................GLOBALES......................................................................... 
 mixer.init()
 avrirConfig = open('kenken_configuracion.dat','rb')
@@ -54,7 +55,7 @@ TiempoJugador = ""
 destructorDerelojes = False
 
 #-.....................................................................SECCION DE FUNCIONES ...............................................................
-if("TablaMenu"=="TablaMenu"):
+if("MenuTable"=="MenuTable"):
     def IrAConfiguracion():
         vMenu = tk.Tk()
         vMenu.geometry("500x600")
