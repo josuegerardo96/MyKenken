@@ -54,11 +54,13 @@ TiempoJugador = ""
 
 destructorDerelojes = False
 
+TableroDeJuego = ListConfig[3]
+TableroFilasColumnas=ListConfig[4]
 #-.....................................................................SECCION DE FUNCIONES ...............................................................
 if("MenuTable"=="MenuTable"):
     def IrAConfiguracion():
         vMenu = tk.Tk()
-        vMenu.geometry("500x600")
+        vMenu.geometry("700x600")
         vMenu.title("Configuracion del juego")
         vMenu.config(bg="#F7DC6F")
 
@@ -67,48 +69,17 @@ if("MenuTable"=="MenuTable"):
                 BFacil.config(bg="#2ED60C")
                 BIntermedio.config(bg="#E25050")
                 BDificil.config(bg="#E25050")
-                global DificultadJuego
-                DificultadJuego = "Facil"
-                avrirConfig = open('kenken_configuracion.dat','rb')
-                while True:
-                    try:
-                        ListConfig = pickle.load(avrirConfig)
-                    except EOFError:
-                        break
-                avrirConfig.close()
-                ListConfig.pop(0)
-                ListConfig.insert(0,DificultadJuego)
-
-                avrir = open('kenken_configuracion.dat','wb')
-                pickle.dump(ListConfig,avrir)
-                avrir.close()
 
             def ConDificultadIntermedio():
                 BFacil.config(bg="#E25050")
                 BIntermedio.config(bg="#2ED60C")
                 BDificil.config(bg="#E25050")
-                global DificultadJuego
-                DificultadJuego = "Intermedio"
-                avrirConfig = open('kenken_configuracion.dat','rb')
-                while True:
-                    try:
-                        ListConfig = pickle.load(avrirConfig)
-                    except EOFError:
-                        break
-                avrirConfig.close()
-                ListConfig.pop(0)
-                ListConfig.insert(0,DificultadJuego)
-                avrir = open('kenken_configuracion.dat','wb')
-                pickle.dump(ListConfig,avrir)
-                avrir.close()
 
             def ConDificultadDificil():
                 BFacil.config(bg="#E25050")
                 BIntermedio.config(bg="#E25050")
                 BDificil.config(bg="#2ED60C")   
-                if messagebox.askyesno("Error","NO HAY JUEGOS PARA ESTE NIVEL \n se pondrá intermedio",parent=vMenu):
-                    global DificultadJuego
-                    DificultadJuego = "Intermedio"
+                if messagebox.showinfo("Error","NO HAY JUEGOS PARA ESTE NIVEL \n se pondrá intermedio",parent=vMenu):
                     Configuracion.ConDificultadIntermedio()
                     BFacil.config(bg="#E25050")
                     BIntermedio.config(bg="#2ED60C")
@@ -197,7 +168,6 @@ if("MenuTable"=="MenuTable"):
                 pickle.dump(ListConfig,avrir)
                 avrir.close()
 
-
             def ConSonido():
                 global Sonido
                 Sonido = "ConSonido"
@@ -217,7 +187,6 @@ if("MenuTable"=="MenuTable"):
                 pickle.dump(ListConfig,avrir)
                 avrir.close()
 
-
             def SinSonido():
                 global Sonido
                 Sonido = "SinSonido"
@@ -236,6 +205,165 @@ if("MenuTable"=="MenuTable"):
                 avrir = open('kenken_configuracion.dat','wb')
                 pickle.dump(ListConfig,avrir)
                 avrir.close()
+
+            def TipoCuadricula(texto):
+                global TableroDeJuego
+                TableroDeJuego = texto
+                avrir = open('kenken_configuracion.dat','rb')
+                while True:
+                    try:
+                        datos = pickle.load(avrir)
+                    except EOFError:
+                        break
+                avrir.close()
+                datos.pop(3)
+                datos.insert(3,TableroDeJuego)
+                avrir = open('kenken_configuracion.dat','wb')
+                pickle.dump(datos,avrir)
+                avrir.close()
+
+                if(texto=='3x3'):
+                    Cuadricula3x3.config(bg="#2ED60C")
+                    Cuadricula4x4.config(bg="#E25050")
+                    Cuadricula5x5.config(bg="#E25050")
+                    Cuadricula6x6.config(bg="#E25050")
+                    Cuadricula7x7.config(bg="#E25050")
+                    Cuadricula8x8.config(bg="#E25050")
+                    Cuadricula9x9.config(bg="#E25050")
+
+                    avrir = open('kenken_configuracion.dat','rb')
+                    while True:
+                        try:
+                            datos = pickle.load(avrir)
+                        except EOFError:
+                            break
+                    avrir.close()
+                    datos.pop(4)
+                    datos.insert(4,[6,3])
+                    avrir = open('kenken_configuracion.dat','wb')
+                    pickle.dump(datos,avrir)
+                    avrir.close()
+                elif(texto=='4x4'):
+                    Cuadricula3x3.config(bg="#E25050")
+                    Cuadricula4x4.config(bg="#2ED60C")
+                    Cuadricula5x5.config(bg="#E25050")
+                    Cuadricula6x6.config(bg="#E25050")
+                    Cuadricula7x7.config(bg="#E25050")
+                    Cuadricula8x8.config(bg="#E25050")
+                    Cuadricula9x9.config(bg="#E25050")
+                    avrir = open('kenken_configuracion.dat','rb')
+                    while True:
+                        try:
+                            datos = pickle.load(avrir)
+                        except EOFError:
+                            break
+                    avrir.close()
+                    datos.pop(4)
+                    datos.insert(4,[8,4])
+                    avrir = open('kenken_configuracion.dat','wb')
+                    pickle.dump(datos,avrir)
+                    avrir.close()
+
+                elif(texto=='5x5'):
+                    Cuadricula3x3.config(bg="#E25050")
+                    Cuadricula4x4.config(bg="#E25050")
+                    Cuadricula5x5.config(bg="#2ED60C")
+                    Cuadricula6x6.config(bg="#E25050")
+                    Cuadricula7x7.config(bg="#E25050")
+                    Cuadricula8x8.config(bg="#E25050")
+                    Cuadricula9x9.config(bg="#E25050")
+                    avrir = open('kenken_configuracion.dat','rb')
+                    while True:
+                        try:
+                            datos = pickle.load(avrir)
+                        except EOFError:
+                            break
+                    avrir.close()
+                    datos.pop(4)
+                    datos.insert(4,[10,5])
+                    avrir = open('kenken_configuracion.dat','wb')
+                    pickle.dump(datos,avrir)
+                    avrir.close()
+                elif(texto=='6x6'):
+                    Cuadricula3x3.config(bg="#E25050")
+                    Cuadricula4x4.config(bg="#E25050")
+                    Cuadricula5x5.config(bg="#E25050")
+                    Cuadricula6x6.config(bg="#2ED60C")
+                    Cuadricula7x7.config(bg="#E25050")
+                    Cuadricula8x8.config(bg="#E25050")
+                    Cuadricula9x9.config(bg="#E25050")
+                    avrir = open('kenken_configuracion.dat','rb')
+                    while True:
+                        try:
+                            datos = pickle.load(avrir)
+                        except EOFError:
+                            break
+                    avrir.close()
+                    datos.pop(4)
+                    datos.insert(4,[12,6])
+                    avrir = open('kenken_configuracion.dat','wb')
+                    pickle.dump(datos,avrir)
+                    avrir.close()
+                elif(texto=='7x7'):
+                    Cuadricula3x3.config(bg="#E25050")
+                    Cuadricula4x4.config(bg="#E25050")
+                    Cuadricula5x5.config(bg="#E25050")
+                    Cuadricula6x6.config(bg="#E25050")
+                    Cuadricula7x7.config(bg="#2ED60C")
+                    Cuadricula8x8.config(bg="#E25050")
+                    Cuadricula9x9.config(bg="#E25050")
+                    avrir = open('kenken_configuracion.dat','rb')
+                    while True:
+                        try:
+                            datos = pickle.load(avrir)
+                        except EOFError:
+                            break
+                    avrir.close()
+                    datos.pop(4)
+                    datos.insert(4,[14,7])
+                    avrir = open('kenken_configuracion.dat','wb')
+                    pickle.dump(datos,avrir)
+                    avrir.close()
+                elif(texto=='8x8'):
+                    Cuadricula3x3.config(bg="#E25050")
+                    Cuadricula4x4.config(bg="#E25050")
+                    Cuadricula5x5.config(bg="#E25050")
+                    Cuadricula6x6.config(bg="#E25050")
+                    Cuadricula7x7.config(bg="#E25050")
+                    Cuadricula8x8.config(bg="#2ED60C")
+                    Cuadricula9x9.config(bg="#E25050")
+                    avrir = open('kenken_configuracion.dat','rb')
+                    while True:
+                        try:
+                            datos = pickle.load(avrir)
+                        except EOFError:
+                            break
+                    avrir.close()
+                    datos.pop(4)
+                    datos.insert(4,[16,8])
+                    avrir = open('kenken_configuracion.dat','wb')
+                    pickle.dump(datos,avrir)
+                    avrir.close()
+                elif(texto=='9x9'):
+                    Cuadricula3x3.config(bg="#E25050")
+                    Cuadricula4x4.config(bg="#E25050")
+                    Cuadricula5x5.config(bg="#E25050")
+                    Cuadricula6x6.config(bg="#E25050")
+                    Cuadricula7x7.config(bg="#E25050")
+                    Cuadricula8x8.config(bg="#E25050")
+                    Cuadricula9x9.config(bg="#2ED60C")
+                    avrir = open('kenken_configuracion.dat','rb')
+                    while True:
+                        try:
+                            datos = pickle.load(avrir)
+                        except EOFError:
+                            break
+                    avrir.close()
+                    datos.pop(4)
+                    datos.insert(4,[18,9])
+                    avrir = open('kenken_configuracion.dat','wb')
+                    pickle.dump(datos,avrir)
+                    avrir.close()
 
 
         class EntradaTimer:
@@ -331,7 +459,6 @@ if("MenuTable"=="MenuTable"):
             AparecerReloj()
             vMenu.destroy()
 
-
         global DificultadJuego
         global Sonido
 
@@ -419,18 +546,16 @@ if("MenuTable"=="MenuTable"):
         selecSonidoFinal = IntVar()
         if(Sonido == "ConSonido"):
             BSonidoSi = tk.Button(vMenu,relief="groove",bg="#E25050",text="Con sonido", command=Configuracion.ConSonido)
-            BSonidoSi.place(x=70,y=430)
+            BSonidoSi.place(x=115,y=430)
         else:
             BSonidoSi = tk.Button(vMenu,relief="groove",bg="#F7DC6F",text="Con sonido", command=Configuracion.ConSonido)
-            BSonidoSi.place(x=70,y=430)
+            BSonidoSi.place(x=115,y=430)
         if(Sonido == "SinSonido"):
             BSonidoNo = tk.Button(vMenu,relief="groove",bg="#E25050", text="Sin sonido", command=Configuracion.SinSonido)
-            BSonidoNo.place(x=170,y=430)
+            BSonidoNo.place(x=215,y=430)
         else:
             BSonidoNo = tk.Button(vMenu,relief="groove",bg="#F7DC6F", text="Sin sonido", command=Configuracion.SinSonido)
-            BSonidoNo.place(x=170,y=430)
-
-        
+            BSonidoNo.place(x=215,y=430)
 
         if(DificultadJuego=="Facil"):
             Configuracion.ConDificultadFacil()
@@ -448,6 +573,48 @@ if("MenuTable"=="MenuTable"):
             Configuracion.ConSonido()
         elif(Sonido=="SinSonido"):
             Configuracion.SinSonido()
+
+
+        global TableroDeJuego
+
+        labelCua = tk.Label(vMenu, text="En que cuadricula desea jugar: ",bg="#F7DC6F", font=('Helvetica',10,'italic bold'))
+        labelCua.place(x=450,y=110)
+
+        Cuadricula3x3 = tk.Button(vMenu,text="3x3",width=10,relief="groove",bg='#E25050',command=lambda: Configuracion.TipoCuadricula(Cuadricula3x3['text']))
+        Cuadricula3x3.place(x=510,y=140)
+
+        Cuadricula4x4 = tk.Button(vMenu,text="4x4",width=10,relief="groove",bg='#E25050',command=lambda: Configuracion.TipoCuadricula(Cuadricula4x4['text']))
+        Cuadricula4x4.place(x=510,y=180)
+
+        Cuadricula5x5 = tk.Button(vMenu,text="5x5",width=10,relief="groove",bg='#E25050',command=lambda: Configuracion.TipoCuadricula(Cuadricula5x5['text']))
+        Cuadricula5x5.place(x=510,y=220)
+
+        Cuadricula6x6 = tk.Button(vMenu,text="6x6",width=10,relief="groove",bg='#E25050',command=lambda: Configuracion.TipoCuadricula(Cuadricula6x6['text']))
+        Cuadricula6x6.place(x=510,y=260)
+
+        Cuadricula7x7 = tk.Button(vMenu,text="7x7",width=10,relief="groove",bg='#E25050',command=lambda: Configuracion.TipoCuadricula(Cuadricula7x7['text']))
+        Cuadricula7x7.place(x=510,y=300)
+
+        Cuadricula8x8 = tk.Button(vMenu,text="8x8",width=10,relief="groove",bg='#E25050',command=lambda: Configuracion.TipoCuadricula(Cuadricula8x8['text']))
+        Cuadricula8x8.place(x=510,y=340)
+
+        Cuadricula9x9 = tk.Button(vMenu,text="9x9",width=10,relief="groove",bg='#E25050',command=lambda: Configuracion.TipoCuadricula(Cuadricula9x9['text']))
+        Cuadricula9x9.place(x=510,y=380)
+
+        if(TableroDeJuego=='3x3'):
+            Cuadricula3x3.config(bg="#2ED60C")
+        elif(TableroDeJuego=='4x4'):
+            Cuadricula4x4.config(bg='#2ED60C')
+        elif(TableroDeJuego=='5x5'):
+            Cuadricula5x5.config(bg="#2ED60C")
+        elif(TableroDeJuego=='6x6'):
+            Cuadricula6x6.config(bg='#2ED60C')
+        elif(TableroDeJuego=='7x7'):
+            Cuadricula7x7.config(bg='#2ED60C')
+        elif(TableroDeJuego=='8x8'):
+            Cuadricula8x8.config(bg="#2ED60C")
+        elif(TableroDeJuego=='9x9'):
+            Cuadricula9x9.config(bg='#2ED60C')
 
         vMenu.mainloop()
 
@@ -903,12 +1070,23 @@ if("Cuadricula"=="Cuadricula"):
             except EOFError:
                 break
         avrir.close()
-        global DificultadJuego
-        if(DificultadJuego == "Facil"):
+        global TableroDeJuego
+        if(TableroDeJuego=='3x3'):
             numRandom = random.randint(0,2)
-        elif(DificultadJuego=="Intermedio"):
+        elif(TableroDeJuego=='4x4'):
             numRandom = random.randint(3,5)
+        elif(TableroDeJuego=='5x5'):
+            numRandom = random.randint(6,8)
+        elif(TableroDeJuego=='6x6'):
+            numRandom = random.randint(9,11)
+        elif(TableroDeJuego=='7x7'):
+            numRandom = random.randint(12,14)
+        elif(TableroDeJuego=='8x8'):
+            numRandom = random.randint(15,16)
+        elif(TableroDeJuego=='9x9'):
+            numRandom = random.randint(17,18)
         global JuegoActual
+        print(numRandom)
         JuegoActual = JuegosDeKenken[numRandom]
         return JuegoActual
 
@@ -920,11 +1098,22 @@ if("Cuadricula"=="Cuadricula"):
             except EOFError:
                 break
         avrir.close()
-        global DificultadJuego
-        if(DificultadJuego == "Facil"):
+        global TableroDeJuego
+        if(TableroDeJuego=='3x3'):
             numRandom = random.randint(0,2)
-        elif(DificultadJuego=="Intermedio"):
+        elif(TableroDeJuego=='4x4'):
             numRandom = random.randint(3,5)
+        elif(TableroDeJuego=='5x5'):
+            numRandom = random.randint(6,8)
+        elif(TableroDeJuego=='6x6'):
+            numRandom = random.randint(9,11)
+        elif(TableroDeJuego=='7x7'):
+            numRandom = random.randint(12,14)
+        elif(TableroDeJuego=='8x8'):
+            numRandom = random.randint(15,16)
+        elif(TableroDeJuego=='9x9'):
+            numRandom = random.randint(17,18)
+        print(numRandom,"Pollo")
         OtroJuegazo = JuegosDeKenken[numRandom]
         if(OtroJuegazo==otro):
             return GeneradorJuego2(otro)
@@ -932,20 +1121,119 @@ if("Cuadricula"=="Cuadricula"):
             return OtroJuegazo
 
     def Cuadricula(JuegoActual):
-        for r in range(12):
-            for c in range(6):
-                if(r==0 or r%2==0):
-                    coloreado = colored(JuegoActual,(r+1,c))
-                    texto = ColocarNum(JuegoActual,(r+1,c))
-                    lavelNumeros = tk.Label(CuadriculaCeldas,text=texto,bg=coloreado,anchor="w", font=("comic"))
-                    lavelNumeros.grid(row=r,column=c,sticky="we",padx=1)
-                else:
-                    coloreado = colored(JuegoActual,(r,c))
-                    Entrada = tk.Entry(CuadriculaCeldas,font=("Arial",23),width=4, justify="center",bd=0, bg=coloreado)
-                    Entrada.grid(row=r,column=c,padx=1,pady=(0,2))
+        global TableroDeJuego
+        if(TableroDeJuego=='3x3'):
+            for r in range(6):
+                for c in range(3):
+                    if(r==0 or r%2==0):
+                        coloreado = colored(JuegoActual,(r+1,c))
+                        texto = ColocarNum(JuegoActual,(r+1,c))
+                        lavelNumeros = tk.Label(CuadriculaCeldas,text=texto,bg=coloreado,anchor="w", font=("comic",33))
+                        lavelNumeros.grid(row=r,column=c,sticky="we",padx=1)
+                    else:
+                        coloreado = colored(JuegoActual,(r,c))
+                        Entrada = tk.Entry(CuadriculaCeldas,font=("Arial",42),width=4, justify="center",bd=0, bg=coloreado)
+                        Entrada.grid(row=r,column=c,padx=1,pady=(0,2))
 
-                    Entrada.bind("<FocusIn>",lambda event, r=r, c=c: CasillaEnfocada(r,c))
-                    Entrada.bind("<FocusOut>",lambda event,color=coloreado, r=r, c=c: CasillaDesenfocada(color,r,c))
+                        Entrada.bind("<FocusIn>",lambda event, r=r, c=c: CasillaEnfocada(r,c))
+                        Entrada.bind("<FocusOut>",lambda event,color=coloreado, r=r, c=c: CasillaDesenfocada(color,r,c))
+
+        elif(TableroDeJuego=='4x4'):
+            for r in range(8):
+                for c in range(4):
+                    if(r==0 or r%2==0):
+                        coloreado = colored(JuegoActual,(r+1,c))
+                        texto = ColocarNum(JuegoActual,(r+1,c))
+                        lavelNumeros = tk.Label(CuadriculaCeldas,text=texto,bg=coloreado,anchor="w", font=("comic",22))
+                        lavelNumeros.grid(row=r,column=c,sticky="we",padx=1)
+                    else:
+                        coloreado = colored(JuegoActual,(r,c))
+                        Entrada = tk.Entry(CuadriculaCeldas,font=("Arial",34),width=4, justify="center",bd=0, bg=coloreado)
+                        Entrada.grid(row=r,column=c,padx=1,pady=(0,2))
+
+                        Entrada.bind("<FocusIn>",lambda event, r=r, c=c: CasillaEnfocada(r,c))
+                        Entrada.bind("<FocusOut>",lambda event,color=coloreado, r=r, c=c: CasillaDesenfocada(color,r,c))
+
+        elif(TableroDeJuego=='5x5'):
+            for r in range(10):
+                for c in range(5):
+                    if(r==0 or r%2==0):
+                        coloreado = colored(JuegoActual,(r+1,c))
+                        texto = ColocarNum(JuegoActual,(r+1,c))
+                        lavelNumeros = tk.Label(CuadriculaCeldas,text=texto,bg=coloreado,anchor="w", font=("comic",16))
+                        lavelNumeros.grid(row=r,column=c,sticky="we",padx=1)
+                    else:
+                        coloreado = colored(JuegoActual,(r,c))
+                        Entrada = tk.Entry(CuadriculaCeldas,font=("Arial",28),width=4, justify="center",bd=0, bg=coloreado)
+                        Entrada.grid(row=r,column=c,padx=1,pady=(0,2))
+
+                        Entrada.bind("<FocusIn>",lambda event, r=r, c=c: CasillaEnfocada(r,c))
+                        Entrada.bind("<FocusOut>",lambda event,color=coloreado, r=r, c=c: CasillaDesenfocada(color,r,c))
+
+        elif(TableroDeJuego=='6x6'):
+            for r in range(12):
+                for c in range(6):
+                    if(r==0 or r%2==0):
+                        coloreado = colored(JuegoActual,(r+1,c))
+                        texto = ColocarNum(JuegoActual,(r+1,c))
+                        lavelNumeros = tk.Label(CuadriculaCeldas,text=texto,bg=coloreado,anchor="w", font=("comic"))
+                        lavelNumeros.grid(row=r,column=c,sticky="we",padx=1)
+                    else:
+                        coloreado = colored(JuegoActual,(r,c))
+                        Entrada = tk.Entry(CuadriculaCeldas,font=("Arial",23),width=4, justify="center",bd=0, bg=coloreado)
+                        Entrada.grid(row=r,column=c,padx=1,pady=(0,2))
+
+                        Entrada.bind("<FocusIn>",lambda event, r=r, c=c: CasillaEnfocada(r,c))
+                        Entrada.bind("<FocusOut>",lambda event,color=coloreado, r=r, c=c: CasillaDesenfocada(color,r,c))
+
+
+        elif(TableroDeJuego=='7x7'):
+            for r in range(14):
+                for c in range(7):
+                    if(r==0 or r%2==0):
+                        coloreado = colored(JuegoActual,(r+1,c))
+                        texto = ColocarNum(JuegoActual,(r+1,c))
+                        lavelNumeros = tk.Label(CuadriculaCeldas,text=texto,bg=coloreado,anchor="w", font=("comic"))
+                        lavelNumeros.grid(row=r,column=c,sticky="we",padx=1)
+                    else:
+                        coloreado = colored(JuegoActual,(r,c))
+                        Entrada = tk.Entry(CuadriculaCeldas,font=("Arial",17),width=4, justify="center",bd=0, bg=coloreado)
+                        Entrada.grid(row=r,column=c,padx=1,pady=(0,2))
+
+                        Entrada.bind("<FocusIn>",lambda event, r=r, c=c: CasillaEnfocada(r,c))
+                        Entrada.bind("<FocusOut>",lambda event,color=coloreado, r=r, c=c: CasillaDesenfocada(color,r,c))
+
+        elif(TableroDeJuego=='8x8'):
+            for r in range(16):
+                for c in range(8):
+                    if(r==0 or r%2==0):
+                        coloreado = colored(JuegoActual,(r+1,c))
+                        texto = ColocarNum(JuegoActual,(r+1,c))
+                        lavelNumeros = tk.Label(CuadriculaCeldas,text=texto,bg=coloreado,anchor="w", font=("comic",8))
+                        lavelNumeros.grid(row=r,column=c,sticky="we",padx=1)
+                    else:
+                        coloreado = colored(JuegoActual,(r,c))
+                        Entrada = tk.Entry(CuadriculaCeldas,font=("Arial",16),width=4, justify="center",bd=0, bg=coloreado)
+                        Entrada.grid(row=r,column=c,padx=1,pady=(0,2))
+
+                        Entrada.bind("<FocusIn>",lambda event, r=r, c=c: CasillaEnfocada(r,c))
+                        Entrada.bind("<FocusOut>",lambda event,color=coloreado, r=r, c=c: CasillaDesenfocada(color,r,c))
+
+        elif(TableroDeJuego=='9x9'):
+            for r in range(18):
+                for c in range(9):
+                    if(r==0 or r%2==0):
+                        coloreado = colored(JuegoActual,(r+1,c))
+                        texto = ColocarNum(JuegoActual,(r+1,c))
+                        lavelNumeros = tk.Label(CuadriculaCeldas,text=texto,bg=coloreado,anchor="w", font=("comic",7))
+                        lavelNumeros.grid(row=r,column=c,sticky="we",padx=1)
+                    else:
+                        coloreado = colored(JuegoActual,(r,c))
+                        Entrada = tk.Entry(CuadriculaCeldas,font=("Arial",13),width=5, justify="center",bd=0, bg=coloreado)
+                        Entrada.grid(row=r,column=c,padx=1,pady=(0,2))
+
+                        Entrada.bind("<FocusIn>",lambda event, r=r, c=c: CasillaEnfocada(r,c))
+                        Entrada.bind("<FocusOut>",lambda event,color=coloreado, r=r, c=c: CasillaDesenfocada(color,r,c))
       
 def AparecerReloj():
     if(MiReloj==True and MiTimer==False):
@@ -1251,9 +1539,10 @@ if("Analizar"=="Analizar"):
         return False
 
     def AnalizarFilas():
-        for r in range(12):
+        global TableroFilasColumnas
+        for r in range(TableroFilasColumnas[0]):
             lista = []
-            for c in range(6):
+            for c in range(TableroFilasColumnas[1]):
                 if(r!=0 and r%2!=0):
                     DatoEnEntrada = CuadriculaCeldas.grid_slaves(row=r,column=c)[0]
                     DatoEnEntrada = DatoEnEntrada.get()
@@ -1265,9 +1554,10 @@ if("Analizar"=="Analizar"):
         return True
 
     def AnalizarColumnas():
-        for c in range(6):
+        global TableroFilasColumnas
+        for c in range(TableroFilasColumnas[0]):
             lista = []
-            for r in range(12):
+            for r in range(TableroFilasColumnas[1]):
                 if(r!=0 and r%2!=0):
                     DatoEnEntrada = CuadriculaCeldas.grid_slaves(row=r,column=c)[0]
                     DatoEnEntrada = DatoEnEntrada.get()
@@ -1578,6 +1868,8 @@ def OtroJuego():
     global MisSegundos
     global destructor
     global Sonido
+    global TableroDeJuego
+    print(TableroDeJuego)
     if(MiReloj==True):
         PausarReloj = False
     if(MiTimer==True):
@@ -1591,6 +1883,7 @@ def OtroJuego():
         CuadriculaCeldas.place_forget()
         NuevoJuego = GeneradorJuego2(JuegoActual)
         Cuadricula(NuevoJuego)
+        CuadriculaCeldas.place_forget()
         CuadriculaCeldas.place(x=150,y=60)
         if(MiReloj==True):
             PausarReloj = True
