@@ -984,8 +984,7 @@ def validarNombre():
             IrAConfiguracion()
 
 if("Cuadricula"=="Cuadricula"):
-    CuadriculaCeldas = tk.Frame(bg="black",relief="solid",bd=2)
-    CuadriculaCeldas.place(x=150,y=60)
+    CuadriculaCeldas = tk.Frame()
     widgetEncendido = False
 
     def CasillaEnfocada(r,c):
@@ -1121,6 +1120,9 @@ if("Cuadricula"=="Cuadricula"):
             return OtroJuegazo
 
     def Cuadricula(JuegoActual):
+        global CuadriculaCeldas
+        CuadriculaCeldas = tk.Frame(bg="black",relief="solid",bd=2)
+        CuadriculaCeldas.place(x=150,y=60)
         global TableroDeJuego
         if(TableroDeJuego=='3x3'):
             for r in range(6):
@@ -1555,9 +1557,9 @@ if("Analizar"=="Analizar"):
 
     def AnalizarColumnas():
         global TableroFilasColumnas
-        for c in range(TableroFilasColumnas[0]):
+        for c in range(TableroFilasColumnas[1]):
             lista = []
-            for r in range(TableroFilasColumnas[1]):
+            for r in range(TableroFilasColumnas[0]):
                 if(r!=0 and r%2!=0):
                     DatoEnEntrada = CuadriculaCeldas.grid_slaves(row=r,column=c)[0]
                     DatoEnEntrada = DatoEnEntrada.get()
@@ -1776,7 +1778,6 @@ def IniciarJuego():
             ActualizarTimer.PausarTiempo()
 
     Cuadricula(GeneradorJuego())
-    CuadriculaCeldas.place(x=150,y=60) 
     if(MiReloj == True or MiTimer == True):
         AparecerReloj()
 
@@ -1857,6 +1858,7 @@ def ValidarJuego():
             JuegoFinalizado = True
 
 def OtroJuego():
+    global CuadriculaCeldas
     global PausarReloj 
     global PausarTimer
     global BotonPausarTiempo
@@ -1869,7 +1871,6 @@ def OtroJuego():
     global destructor
     global Sonido
     global TableroDeJuego
-    print(TableroDeJuego)
     if(MiReloj==True):
         PausarReloj = False
     if(MiTimer==True):
@@ -1880,11 +1881,8 @@ def OtroJuego():
         MisHoras = "00"
         MisMinutos = "00"
         MisSegundos = "00"
-        CuadriculaCeldas.place_forget()
         NuevoJuego = GeneradorJuego2(JuegoActual)
         Cuadricula(NuevoJuego)
-        CuadriculaCeldas.place_forget()
-        CuadriculaCeldas.place(x=150,y=60)
         if(MiReloj==True):
             PausarReloj = True
         if(MiTimer==True):
@@ -1901,6 +1899,7 @@ def OtroJuego():
             PausarTimer = True
 
 def ReiniciarJuego():
+    global CuadriculaCeldas
     global PausarReloj 
     global PausarTimer
     global BotonPausarTiempo
@@ -1949,6 +1948,7 @@ def TerminarJuego():
     global MisSegundos
     global destructor
     global destructorDerelojes
+    global CuadriculaCeldas
     if(MiReloj==True):
         PausarReloj = False
     if(MiTimer==True):
