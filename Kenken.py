@@ -208,6 +208,7 @@ if("MenuTable"=="MenuTable"):
 
             def TipoCuadricula(texto):
                 global TableroDeJuego
+                global TableroFilasColumnas
                 TableroDeJuego = texto
                 avrir = open('kenken_configuracion.dat','rb')
                 while True:
@@ -243,6 +244,7 @@ if("MenuTable"=="MenuTable"):
                     avrir = open('kenken_configuracion.dat','wb')
                     pickle.dump(datos,avrir)
                     avrir.close()
+                    TableroFilasColumnas=[6,3]
                 elif(texto=='4x4'):
                     Cuadricula3x3.config(bg="#E25050")
                     Cuadricula4x4.config(bg="#2ED60C")
@@ -263,7 +265,7 @@ if("MenuTable"=="MenuTable"):
                     avrir = open('kenken_configuracion.dat','wb')
                     pickle.dump(datos,avrir)
                     avrir.close()
-
+                    TableroFilasColumnas =[8,4]
                 elif(texto=='5x5'):
                     Cuadricula3x3.config(bg="#E25050")
                     Cuadricula4x4.config(bg="#E25050")
@@ -284,6 +286,7 @@ if("MenuTable"=="MenuTable"):
                     avrir = open('kenken_configuracion.dat','wb')
                     pickle.dump(datos,avrir)
                     avrir.close()
+                    TableroFilasColumnas=[10,5]
                 elif(texto=='6x6'):
                     Cuadricula3x3.config(bg="#E25050")
                     Cuadricula4x4.config(bg="#E25050")
@@ -324,6 +327,7 @@ if("MenuTable"=="MenuTable"):
                     avrir = open('kenken_configuracion.dat','wb')
                     pickle.dump(datos,avrir)
                     avrir.close()
+                    TableroFilasColumnas = [14,7]
                 elif(texto=='8x8'):
                     Cuadricula3x3.config(bg="#E25050")
                     Cuadricula4x4.config(bg="#E25050")
@@ -344,6 +348,7 @@ if("MenuTable"=="MenuTable"):
                     avrir = open('kenken_configuracion.dat','wb')
                     pickle.dump(datos,avrir)
                     avrir.close()
+                    TableroFilasColumnas = [16,8]
                 elif(texto=='9x9'):
                     Cuadricula3x3.config(bg="#E25050")
                     Cuadricula4x4.config(bg="#E25050")
@@ -364,7 +369,7 @@ if("MenuTable"=="MenuTable"):
                     avrir = open('kenken_configuracion.dat','wb')
                     pickle.dump(datos,avrir)
                     avrir.close()
-
+                    TableroFilasColumnas = [18,9]
 
         class EntradaTimer:
             def EntradaHoras(evento):
@@ -1085,7 +1090,6 @@ if("Cuadricula"=="Cuadricula"):
         elif(TableroDeJuego=='9x9'):
             numRandom = random.randint(17,18)
         global JuegoActual
-        print(numRandom)
         JuegoActual = JuegosDeKenken[numRandom]
         return JuegoActual
 
@@ -1112,7 +1116,6 @@ if("Cuadricula"=="Cuadricula"):
             numRandom = random.randint(15,16)
         elif(TableroDeJuego=='9x9'):
             numRandom = random.randint(17,18)
-        print(numRandom,"Pollo")
         OtroJuegazo = JuegosDeKenken[numRandom]
         if(OtroJuegazo==otro):
             return GeneradorJuego2(otro)
@@ -1881,8 +1884,16 @@ def OtroJuego():
         MisHoras = "00"
         MisMinutos = "00"
         MisSegundos = "00"
+        for r in range(TableroFilasColumnas[0]):
+            lista = []
+            for c in range(TableroFilasColumnas[1]):
+                if(r!=0 and r%2!=0):
+                    DatoEnEntrada = CuadriculaCeldas.grid_slaves(row=r,column=c)[0]
+                    DatoEnEntrada.destroy()
+        CuadriculaCeldas.place_forget()
         NuevoJuego = GeneradorJuego2(JuegoActual)
         Cuadricula(NuevoJuego)
+        CuadriculaCeldas.place(x=150,y=60)
         if(MiReloj==True):
             PausarReloj = True
         if(MiTimer==True):
@@ -1920,6 +1931,12 @@ def ReiniciarJuego():
         MisHoras = "00"
         MisMinutos = "00"
         MisSegundos = "00"
+        for r in range(TableroFilasColumnas[0]):
+            lista = []
+            for c in range(TableroFilasColumnas[1]):
+                if(r!=0 and r%2!=0):
+                    DatoEnEntrada = CuadriculaCeldas.grid_slaves(row=r,column=c)[0]
+                    DatoEnEntrada.destroy()
         CuadriculaCeldas.place_forget()
         Cuadricula(JuegoActual)
         CuadriculaCeldas.place(x=150,y=60)
@@ -1949,6 +1966,7 @@ def TerminarJuego():
     global destructor
     global destructorDerelojes
     global CuadriculaCeldas
+    global TableroFilasColumnas
     if(MiReloj==True):
         PausarReloj = False
     if(MiTimer==True):
@@ -1959,6 +1977,12 @@ def TerminarJuego():
         MisHoras = "00"
         MisMinutos = "00"
         MisSegundos = "00"
+        for r in range(TableroFilasColumnas[0]):
+            lista = []
+            for c in range(TableroFilasColumnas[1]):
+                if(r!=0 and r%2!=0):
+                    DatoEnEntrada = CuadriculaCeldas.grid_slaves(row=r,column=c)[0]
+                    DatoEnEntrada.destroy()
         CuadriculaCeldas.place_forget()
         BIniciarJuego.config(state="normal")
         BotonIrAConfiguracion.config(state="normal")
