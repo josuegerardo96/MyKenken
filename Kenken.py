@@ -1206,6 +1206,7 @@ if("Cuadricula"=="Cuadricula"):
             return OtroJuegazo
 
     def Cuadricula(JuegoActual):
+        print(JuegoActual)
         global CuadriculaCeldas
         CuadriculaCeldas = tk.Frame(bg="black",relief="solid",bd=2)
         CuadriculaCeldas.place(x=150,y=60)
@@ -1492,7 +1493,6 @@ class Ranking:
         Avrir = open("kenken_top10.dat","wb")
         pickle.dump(ListaJugadores,Avrir)
         Avrir.close()
-
 
 def GeneradorPDF(listaJ, listaT):
     docpdf = canvas.Canvas("Ranking Kenken.pdf")
