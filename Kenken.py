@@ -1,4 +1,7 @@
 import tkinter as tk 
+import os
+import reportlab
+from reportlab.pdfgen import canvas
 from tkinter import messagebox
 import webbrowser
 import pickle
@@ -56,6 +59,8 @@ destructorDerelojes = False
 
 TableroDeJuego = ListConfig[3]
 TableroFilasColumnas=ListConfig[4]
+
+LaCancion = ListConfig[5]
 #-.....................................................................SECCION DE FUNCIONES ...............................................................
 if("MenuTable"=="MenuTable"):
     def IrAConfiguracion():
@@ -173,6 +178,11 @@ if("MenuTable"=="MenuTable"):
                 Sonido = "ConSonido"
                 BSonidoSi.config(bg="#2ED60C")
                 BSonidoNo.config(bg="#E25050")
+                BSonidoSi.place(x=115,y=430)
+                CrashBoton.config(state='normal')
+                marioBoton.config(state='normal')
+                spidermanboton.config(state='normal')
+                jumpshotBoton.config(state='normal')
                 avrirConfig = open('kenken_configuracion.dat','rb')
                 while True:
                     try:
@@ -187,11 +197,60 @@ if("MenuTable"=="MenuTable"):
                 pickle.dump(ListConfig,avrir)
                 avrir.close()
 
+            def ConMusica(texto):
+                global LaCancion
+                if(texto=='Crash' or texto=='crash.mp3'):
+                    LaCancion = 'crash.mp3'
+                    CrashBoton.config(bg='#2ED60C')
+                    marioBoton.config(bg='#E25050')
+                    spidermanboton.config(bg="#E25050")
+                    jumpshotBoton.config(bg="#E25050")
+
+                elif(texto=='Mario'or texto=='mario.mp3'):
+                    LaCancion = 'mario.mp3'
+                    marioBoton.config(bg='#2ED60C')
+                    CrashBoton.config(bg='#E25050')
+                    spidermanboton.config(bg="#E25050")
+                    jumpshotBoton.config(bg="#E25050")
+
+                elif(texto=='Spider-man' or texto=='spiderman.mp3'):
+                    LaCancion = 'spiderman.mp3'
+                    spidermanboton.config(bg='#2ED60C')
+                    marioBoton.config(bg='#E25050')
+                    CrashBoton.config(bg='#E25050')
+                    jumpshotBoton.config(bg="#E25050")
+
+                elif(texto=='Jumpshot' or texto=='jumpshot.mp3'):
+                    LaCancion = 'jumpshot.mp3'
+                    jumpshotBoton.config(bg='#2ED60C')
+                    marioBoton.config(bg='#E25050')
+                    CrashBoton.config(bg='#E25050')
+                    spidermanboton.config(bg="#E25050")
+
+
+                avrir = open('kenken_configuracion.dat','rb')
+                while True:
+                    try:
+                        ListaConfig = pickle.load(avrir)
+                    except EOFError:
+                        break
+                avrir.close()
+                ListaConfig.pop(5)
+                ListaConfig.insert(5,LaCancion)
+                avrir = open('kenken_configuracion.dat','wb')
+                pickle.dump(ListaConfig,avrir)
+                avrir.close()
+
             def SinSonido():
                 global Sonido
                 Sonido = "SinSonido"
                 BSonidoNo.config(bg="#2ED60C")
                 BSonidoSi.config(bg="#E25050")
+                BSonidoSi.place(x=115,y=430)
+                CrashBoton.config(state='disabled')
+                marioBoton.config(state='disabled')
+                spidermanboton.config(state='disabled')
+                jumpshotBoton.config(state='disabled')
                 avrirConfig = open('kenken_configuracion.dat','rb')
                 while True:
                     try:
@@ -466,6 +525,7 @@ if("MenuTable"=="MenuTable"):
 
         global DificultadJuego
         global Sonido
+        global LaCancion
 
         Introduccion = tk.Label(vMenu,bg="#F7DC6F",text="Haga aquí la configuración del juego a su gusto\n si selecciona el cronometro utilice el botón para enviar los datos\n de lo contrario seleccione su opción y cierre la venta :)",pady=20).pack()
 
@@ -548,19 +608,42 @@ if("MenuTable"=="MenuTable"):
 
         SonidoLabel = tk.Label(vMenu,bg="#F7DC6F",text="Sonido:").place(x=50,y=400)
 
+        CrashBoton = tk.Button(vMenu,relief="groove",bg='#E25050',text="Crash", command=lambda: Configuracion.ConMusica(CrashBoton['text']))
+        CrashBoton.place(x=30,y=500)
+        marioBoton = tk.Button(vMenu,relief="groove",bg='#E25050',text="Mario", command=lambda: Configuracion.ConMusica(marioBoton['text']))
+        marioBoton.place(x=110,y=500)
+        spidermanboton = tk.Button(vMenu,relief="groove",bg='#E25050',text="Spider-man", command=lambda: Configuracion.ConMusica(spidermanboton['text']))
+        spidermanboton.place(x=180,y=500)
+        jumpshotBoton = tk.Button(vMenu,relief="groove",bg='#E25050',text="Jumpshot", command=lambda: Configuracion.ConMusica(jumpshotBoton['text']))
+        jumpshotBoton.place(x=280,y=500)
+
+        Configuracion.ConMusica(LaCancion)
+
         selecSonidoFinal = IntVar()
         if(Sonido == "ConSonido"):
             BSonidoSi = tk.Button(vMenu,relief="groove",bg="#E25050",text="Con sonido", command=Configuracion.ConSonido)
             BSonidoSi.place(x=115,y=430)
+            BSonidoSi.place(x=115,y=430)
+            CrashBoton.config(state='normal')
+            marioBoton.config(state='normal')
+            spidermanboton.config(state='normal')
+            jumpshotBoton.config(state='normal')
+
         else:
             BSonidoSi = tk.Button(vMenu,relief="groove",bg="#F7DC6F",text="Con sonido", command=Configuracion.ConSonido)
             BSonidoSi.place(x=115,y=430)
+            CrashBoton.config(state='disabled')
+            marioBoton.config(state='disabled')
+            spidermanboton.config(state='disabled')
+            jumpshotBoton.config(state='disabled')
         if(Sonido == "SinSonido"):
             BSonidoNo = tk.Button(vMenu,relief="groove",bg="#E25050", text="Sin sonido", command=Configuracion.SinSonido)
             BSonidoNo.place(x=215,y=430)
         else:
             BSonidoNo = tk.Button(vMenu,relief="groove",bg="#F7DC6F", text="Sin sonido", command=Configuracion.SinSonido)
             BSonidoNo.place(x=215,y=430)
+
+
 
         if(DificultadJuego=="Facil"):
             Configuracion.ConDificultadFacil()
@@ -1410,6 +1493,24 @@ class Ranking:
         pickle.dump(ListaJugadores,Avrir)
         Avrir.close()
 
+
+def GeneradorPDF(listaJ, listaT):
+    docpdf = canvas.Canvas("Ranking Kenken.pdf")
+    docpdf.setTitle("Ranking del kenken")
+    docpdf.setFont('Helvetica',20)
+    docpdf.drawString(210,770,"Ranking kenken")
+    x=180
+    y=700
+    for i in range(10):
+        docpdf.setFont('Helvetica',14)
+        docpdf.drawString(x,y,listaJ[i])
+        docpdf.drawString(x+150,y,listaT[i])
+        if(i!=9):
+            docpdf.line(x-50,y-25,x+250,y-25)
+        y = y - 50
+    docpdf.save()
+    os.startfile("Ranking Kenken.pdf")
+
 def AbrirTop():
     global NombreJugador
     global TiempoJugador
@@ -1533,6 +1634,34 @@ def AbrirTop():
     decimo1Tempo=(PuestoTiempo10)
     decimoTempo = tk.Label(ContenerPuntos, text=decimo1Tempo,width=15, bg="#B3FF8D")
     decimoTempo.grid(row=10, column=2, pady=6)
+
+
+    ListaNombreJugadores = []
+    ListaNombreJugadores.append(primo1)
+    ListaNombreJugadores.append(secondo1)
+    ListaNombreJugadores.append(terzo1)
+    ListaNombreJugadores.append(quarto1)
+    ListaNombreJugadores.append(quinto1)
+    ListaNombreJugadores.append(sexto1)
+    ListaNombreJugadores.append(settimo1)
+    ListaNombreJugadores.append(octavo1)
+    ListaNombreJugadores.append(nono1)
+    ListaNombreJugadores.append(decimo1)
+
+    ListaTiemposJugadores = []
+    ListaTiemposJugadores.append(primo1Tempo)
+    ListaTiemposJugadores.append(secondo1Tempo)
+    ListaTiemposJugadores.append(terzo1Tempo)
+    ListaTiemposJugadores.append(quarto1Tempo)
+    ListaTiemposJugadores.append(quinto1Tempo)
+    ListaTiemposJugadores.append(sexto1Tempo)
+    ListaTiemposJugadores.append(settimo1Tempo)
+    ListaTiemposJugadores.append(octavo1Tempo)
+    ListaTiemposJugadores.append(nono1Tempo)
+    ListaTiemposJugadores.append(decimo1Tempo)
+
+    BotonPDF = tk.Button(vTabla, text="Generar PDF", bg="#FFD700", relief="groove", command=lambda: GeneradorPDF(ListaNombreJugadores,ListaTiemposJugadores))
+    BotonPDF.pack(pady=7)
 
     vTabla.mainloop()
 
@@ -1783,9 +1912,9 @@ def IniciarJuego():
     Cuadricula(GeneradorJuego())
     if(MiReloj == True or MiTimer == True):
         AparecerReloj()
-
+    global LaCancion
     if(Sonido=="ConSonido"):
-        mixer.music.load("mario.mp3")
+        mixer.music.load(LaCancion)
         mixer.music.play(-1)
     
 def ValidarJuego():
@@ -1900,8 +2029,9 @@ def OtroJuego():
             PausarTimer = True
         JuegoActual = NuevoJuego
         if(Sonido=="ConSonido"):
+            global LaCancion
             mixer.music.stop()
-            mixer.music.load("mario.mp3")
+            mixer.music.load(LaCancion)
             mixer.music.play(-1)
     else:
         if(MiReloj==True):
@@ -1945,8 +2075,9 @@ def ReiniciarJuego():
         if(MiTimer==True):
             PausarTimer = True
         if(Sonido =="ConSonido"):
+            global LaCancion
             mixer.music.stop()
-            mixer.music.load("mario.mp3")
+            mixer.music.load(LaCancion)
             mixer.music.play(-1)
     else:
         if(MiReloj==True):
