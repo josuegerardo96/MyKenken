@@ -2306,9 +2306,6 @@ def ValidarJuego():
         if(MiTimer==True or MiReloj==True):
             BotonPausarTiempo.destroy()
 
-
-
-
 def OtroJuego():
     global CuadriculaCeldas
     global PausarReloj 
