@@ -16,7 +16,7 @@ from itertools import product
 
 vPrincipal = tk.Tk()
 vPrincipal.title("Kenken")
-vPrincipal.geometry("950x630")
+vPrincipal.geometry("1000x630")
 vPrincipal.config(bg="#F7DC6F")
 
 #...........................................................................GLOBALES......................................................................... 
@@ -1231,27 +1231,37 @@ if("Cuadricula"=="Cuadricula"):
             messagebox.showerror("Error","Ninguna casilla seleccionada")
 
 
-    Bnumero1 = tk.Button(vPrincipal,font=("Helvetica",15), background="#34FEAF",relief="groove", text="1",padx=10,command=lambda: insertador(Bnumero1['text']))
+    Bnumero1 = tk.Button(vPrincipal,font=("Helvetica",14), background="#34FEAF",relief="groove", text="1",padx=10,command=lambda: insertador(Bnumero1['text']))
     Bnumero1.place(x=90,y=70)
 
-    Bnumero2 = tk.Button(vPrincipal,font=("Helvetica",15), background="#34FEAF",relief="groove", text="2",padx=10,command=lambda: insertador(Bnumero2['text']))
-    Bnumero2.place(x=90,y=130)
+    Bnumero2 = tk.Button(vPrincipal,font=("Helvetica",14), background="#34FEAF",relief="groove", text="2",padx=10,command=lambda: insertador(Bnumero2['text']))
+    Bnumero2.place(x=90,y=110)
 
-    Bnumero3 = tk.Button(vPrincipal,font=("Helvetica",15), background="#34FEAF",relief="groove", text="3",padx=10,command=lambda: insertador(Bnumero3['text']))
-    Bnumero3.place(x=90,y=190)
+    Bnumero3 = tk.Button(vPrincipal,font=("Helvetica",14), background="#34FEAF",relief="groove", text="3",padx=10,command=lambda: insertador(Bnumero3['text']))
+    Bnumero3.place(x=90,y=150)
 
-    Bnumero4 = tk.Button(vPrincipal,font=("Helvetica",15), background="#34FEAF",relief="groove", text="4",padx=10,command=lambda: insertador(Bnumero4['text']))
-    Bnumero4.place(x=90,y=250)
+    Bnumero4 = tk.Button(vPrincipal,font=("Helvetica",14), background="#34FEAF",relief="groove", text="4",padx=10,command=lambda: insertador(Bnumero4['text']))
+    Bnumero4.place(x=90,y=190)
 
-    Bnumero5 = tk.Button(vPrincipal,font=("Helvetica",15), background="#34FEAF",relief="groove", text="5",padx=10,command=lambda: insertador(Bnumero5['text']))
-    Bnumero5.place(x=90,y=310)
+    Bnumero5 = tk.Button(vPrincipal,font=("Helvetica",14), background="#34FEAF",relief="groove", text="5",padx=10,command=lambda: insertador(Bnumero5['text']))
+    Bnumero5.place(x=90,y=230)
 
-    Bnumero6 = tk.Button(vPrincipal,font=("Helvetica",15), background="#34FEAF",relief="groove", text="6",padx=10,command=lambda: insertador(Bnumero6['text']))
-    Bnumero6.place(x=90,y=370)
+    Bnumero6 = tk.Button(vPrincipal,font=("Helvetica",14), background="#34FEAF",relief="groove", text="6",padx=10,command=lambda: insertador(Bnumero6['text']))
+    Bnumero6.place(x=90,y=270)
+
+    Bnumero7 = tk.Button(vPrincipal,font=("Helvetica",14), background="#34FEAF",relief="groove", text="7",padx=10,command=lambda: insertador(Bnumero7['text']))
+    Bnumero7.place(x=90,y=310)
+
+    Bnumero8 = tk.Button(vPrincipal,font=("Helvetica",14), background="#34FEAF",relief="groove", text="8",padx=10,command=lambda: insertador(Bnumero8['text']))
+    Bnumero8.place(x=90,y=350)
+
+    Bnumero9 = tk.Button(vPrincipal,font=("Helvetica",14), background="#34FEAF",relief="groove", text="9",padx=10,command=lambda: insertador(Bnumero9['text']))
+    Bnumero9.place(x=90,y=390)
 
     photo = tk.PhotoImage(file="borrador.png")
     Bborrador = tk.Button(vPrincipal,font=("Helvetica",15), image=photo,background="#34FEAF",relief="groove", text="Borrar",padx=10,command=lambda: insertador(Bborrador['text']))
     Bborrador.place(x=18,y=200)
+
 
 
     def colored(Dic,Coordenadas):
@@ -1337,6 +1347,15 @@ if("Cuadricula"=="Cuadricula"):
         CuadriculaCeldas.place(x=150,y=60)
         global TableroDeJuego
         if(TableroDeJuego=='3x3'):
+            Bnumero1.config(state="normal")
+            Bnumero2.config(state="normal")
+            Bnumero3.config(state="normal")
+            Bnumero4.config(state="disabled")
+            Bnumero5.config(state="disabled")
+            Bnumero6.config(state="disabled")
+            Bnumero7.config(state="disabled")
+            Bnumero8.config(state="disabled")
+            Bnumero9.config(state="disabled")
             for r in range(6):
                 for c in range(3):
                     if(r==0 or r%2==0):
@@ -1353,6 +1372,15 @@ if("Cuadricula"=="Cuadricula"):
                         Entrada.bind("<FocusOut>",lambda event,color=coloreado, r=r, c=c: CasillaDesenfocada(color,r,c))
 
         elif(TableroDeJuego=='4x4'):
+            Bnumero1.config(state="normal")
+            Bnumero2.config(state="normal")
+            Bnumero3.config(state="normal")
+            Bnumero4.config(state="normal")
+            Bnumero5.config(state="disabled")
+            Bnumero6.config(state="disabled")
+            Bnumero7.config(state="disabled")
+            Bnumero8.config(state="disabled")
+            Bnumero9.config(state="disabled")
             for r in range(8):
                 for c in range(4):
                     if(r==0 or r%2==0):
@@ -1369,6 +1397,15 @@ if("Cuadricula"=="Cuadricula"):
                         Entrada.bind("<FocusOut>",lambda event,color=coloreado, r=r, c=c: CasillaDesenfocada(color,r,c))
 
         elif(TableroDeJuego=='5x5'):
+            Bnumero1.config(state="normal")
+            Bnumero2.config(state="normal")
+            Bnumero3.config(state="normal")
+            Bnumero4.config(state="normal")
+            Bnumero5.config(state="normal")
+            Bnumero6.config(state="disabled")
+            Bnumero7.config(state="disabled")
+            Bnumero8.config(state="disabled")
+            Bnumero9.config(state="disabled")
             for r in range(10):
                 for c in range(5):
                     if(r==0 or r%2==0):
@@ -1385,6 +1422,15 @@ if("Cuadricula"=="Cuadricula"):
                         Entrada.bind("<FocusOut>",lambda event,color=coloreado, r=r, c=c: CasillaDesenfocada(color,r,c))
 
         elif(TableroDeJuego=='6x6'):
+            Bnumero1.config(state="normal")
+            Bnumero2.config(state="normal")
+            Bnumero3.config(state="normal")
+            Bnumero4.config(state="normal")
+            Bnumero5.config(state="normal")
+            Bnumero6.config(state="normal")
+            Bnumero7.config(state="disabled")
+            Bnumero8.config(state="disabled")
+            Bnumero9.config(state="disabled")
             for r in range(12):
                 for c in range(6):
                     if(r==0 or r%2==0):
@@ -1402,6 +1448,15 @@ if("Cuadricula"=="Cuadricula"):
 
 
         elif(TableroDeJuego=='7x7'):
+            Bnumero1.config(state="normal")
+            Bnumero2.config(state="normal")
+            Bnumero3.config(state="normal")
+            Bnumero4.config(state="normal")
+            Bnumero5.config(state="normal")
+            Bnumero6.config(state="normal")
+            Bnumero7.config(state="normal")
+            Bnumero8.config(state="disabled")
+            Bnumero9.config(state="disabled")
             for r in range(14):
                 for c in range(7):
                     if(r==0 or r%2==0):
@@ -1418,6 +1473,15 @@ if("Cuadricula"=="Cuadricula"):
                         Entrada.bind("<FocusOut>",lambda event,color=coloreado, r=r, c=c: CasillaDesenfocada(color,r,c))
 
         elif(TableroDeJuego=='8x8'):
+            Bnumero1.config(state="normal")
+            Bnumero2.config(state="normal")
+            Bnumero3.config(state="normal")
+            Bnumero4.config(state="normal")
+            Bnumero5.config(state="normal")
+            Bnumero6.config(state="normal")
+            Bnumero7.config(state="normal")
+            Bnumero8.config(state="normal")
+            Bnumero9.config(state="disabled")
             for r in range(16):
                 for c in range(8):
                     if(r==0 or r%2==0):
@@ -1434,6 +1498,15 @@ if("Cuadricula"=="Cuadricula"):
                         Entrada.bind("<FocusOut>",lambda event,color=coloreado, r=r, c=c: CasillaDesenfocada(color,r,c))
 
         elif(TableroDeJuego=='9x9'):
+            Bnumero1.config(state="normal")
+            Bnumero2.config(state="normal")
+            Bnumero3.config(state="normal")
+            Bnumero4.config(state="normal")
+            Bnumero5.config(state="normal")
+            Bnumero6.config(state="normal")
+            Bnumero7.config(state="normal")
+            Bnumero8.config(state="normal")
+            Bnumero9.config(state="normal")
             for r in range(18):
                 for c in range(9):
                     if(r==0 or r%2==0):
@@ -1986,8 +2059,6 @@ if("Analizar"=="Analizar"):
                     messagebox.showinfo("Ganaste","GANASTE!!! MUCHAS FELICIDADES")
                     return True
 
-
-
 #-----------------------------------INICIAR COMANDOS PARA BOTONES DE JUEGO------------------------------------------------------
 Msj = tk.Label()
 def MensajeDeConfiguracion(evento):
@@ -2238,6 +2309,15 @@ def TerminarJuego():
     if(MiTimer==True):
         PausarTimer = False
     if messagebox.askyesno("Finalizar","Seguro que desea finalizar el juego actual?"):
+        Bnumero1.config(state="disabled")
+        Bnumero2.config(state="disabled")
+        Bnumero3.config(state="disabled")
+        Bnumero4.config(state="disabled")
+        Bnumero5.config(state="disabled")
+        Bnumero6.config(state="disabled")
+        Bnumero7.config(state="disabled")
+        Bnumero8.config(state="disabled")
+        Bnumero9.config(state="disabled")
         botonSoluciones.destroy()
         destructor = True
         destructorDerelojes = True
