@@ -11,10 +11,12 @@ from tkinter import StringVar
 import random
 import pygame
 from pygame import mixer
+import itertools
+from itertools import product
 
 vPrincipal = tk.Tk()
 vPrincipal.title("Kenken")
-vPrincipal.geometry("800x630")
+vPrincipal.geometry("950x630")
 vPrincipal.config(bg="#F7DC6F")
 
 #...........................................................................GLOBALES......................................................................... 
@@ -1074,24 +1076,148 @@ def validarNombre():
 if("Cuadricula"=="Cuadricula"):
     CuadriculaCeldas = tk.Frame()
     widgetEncendido = False
+    FrameSol = tk.Frame(vPrincipal,bg="#F7DC6F")
+    FrameSol.place(x=640,y=200)
+    FrameSol.place_forget()
+
+    def posiblesSoluciones(TamCuadricula, Ncasillas, operacion, resultador):
+        lista = []
+        ListaSoluciones = []
+        con = 1
+        while(con<=TamCuadricula):
+            lista.append(con)
+            con = con+1
+        for i in range(0,len(lista)+1):
+            for sol in itertools.combinations(lista,i):
+                if(len(sol)==Ncasillas):
+                    ListaSoluciones.append(list(sol))
+
+        PLista = []
+        if(operacion=='+'):
+            Suma = 0
+            for e in ListaSoluciones:
+                for w in e:
+                    Suma = Suma + w
+                if(Suma == resultador):
+                    PLista.append(e)
+                Suma = 0
+
+        elif(operacion=='-'):
+            c1 = 0
+            while(c1<len(ListaSoluciones)):
+                c2 = 0
+                ListaSoluciones[c1].sort(reverse=True)
+                Resta = ListaSoluciones[c1][0]*2
+                while(c2<len(ListaSoluciones[c1])):
+                    Resta = Resta- ListaSoluciones[c1][c2]
+                    c2 = c2 + 1
+                if(Resta==resultador):
+                    PLista.append(ListaSoluciones[c1])
+                c1 = c1 + 1
+
+        elif(operacion=='x'):
+            multi = 1
+            for e in ListaSoluciones:
+                for w in e:
+                    multi = multi * w
+                if(multi == resultador):
+                    PLista.append(e)
+                multi = 1
+
+        elif(operacion=='/'):
+            c1 = 0
+            while(c1<len(ListaSoluciones)):
+                c2 = 0
+                ListaSoluciones[c1].sort(reverse=True)
+                divi = ListaSoluciones[c1][0]*ListaSoluciones[c1][0]
+                while(c2<len(ListaSoluciones[c1])):
+                    divi = divi/ListaSoluciones[c1][c2]
+                    c2 = c2 + 1
+                if(int(divi)==resultador):
+                    PLista.append(ListaSoluciones[c1])
+                c1 = c1 + 1
+        else:
+            PLista.append(int(operacion))
+            return PLista
+
+        SLista = []
+        for q in PLista:
+            rFinal = list(itertools.permutations(q))
+            SLista.append(rFinal)
+
+        TLista = []
+        for e in SLista:
+            for i in e:
+                TLista.append(i)
+
+        return TLista
+
+    def buscaSoluciones(juegoActual,coordenada):
+        for i in juegoActual:
+            for o in juegoActual[i]:
+                if(o==coordenada):
+                    lineaDic = juegoActual[i]
+                    break
+
+        numero = lineaDic[0]
+        numeroOp = ""
+        for i in lineaDic[0]:
+            if(i.isdigit()):
+                numeroOp = numeroOp+str(i)
+        numeroOp = int(numeroOp)
+        signo= lineaDic[0][-1]
+        numTuplas=0
+        for i in lineaDic:
+            if(type(i)==tuple):
+                numTuplas = numTuplas + 1
+
+        global TableroDeJuego
+        TamJuego=TableroDeJuego[0]
+        TamJuego = int(TamJuego)
+        return posiblesSoluciones(TamJuego,numTuplas,signo,numeroOp)
+        global botonSoluciones
+
+    def FrameSoluciones(Psoluciones):
+        global FrameSol
+        FrameSol.destroy()
+        FrameSol = tk.Frame(vPrincipal,bg="#F7DC6F")
+        FrameSol.place(x=620,y=180)
+        c = 0
+        for z in range(12):
+            for x in range(5):
+                soltex = str(Psoluciones[c])
+                soltex = soltex.replace('(',"")
+                soltex = soltex.replace(')',"")
+                labeSol = tk.Label(FrameSol,text=soltex,bg="#A51F1F",fg="#F7DC6F", relief="groove", font=('Helvetica',12,'italic bold'),padx=5)
+                labeSol.grid(row=z,column=x,padx=1,pady=2)
+                c = c + 1
 
     def CasillaEnfocada(r,c):
         global widget
         global widgetEncendido
+        global JuegoActual
         widgetEncendido = True
         widget = CuadriculaCeldas.grid_slaves(row=r, column=c)[0]
         widget.config(bg="#E3FACF")
         wid = CuadriculaCeldas.grid_slaves(row=r-1,column=c)[0]
         wid.config(bg="#E3FACF")
+        Psoluciones = buscaSoluciones(JuegoActual,(r,c))
+        global botonSoluciones
+        botonSoluciones = tk.Button(vPrincipal,text="Ver soluciones \n para cuadricula",command=lambda: FrameSoluciones(Psoluciones),bg="#DEABF3",relief="groove")
+        botonSoluciones.place(x=700,y=130)
 
     def CasillaDesenfocada(color,r,c):
+        global FrameSol
         global widgetEncendido
+        global botonSoluciones
         widgetEncendido=False
         widget = CuadriculaCeldas.grid_slaves(row=r, column=c)[0]
         widget.config(bg=color)
         wid = CuadriculaCeldas.grid_slaves(row=r-1,column=c)[0]
         wid.config(bg=color)
-
+        FrameSol.destroy()
+        botonSoluciones.destroy()
+        
     def insertador(w):
         global widget
         global widgetEncendido
@@ -1206,7 +1332,6 @@ if("Cuadricula"=="Cuadricula"):
             return OtroJuegazo
 
     def Cuadricula(JuegoActual):
-        print(JuegoActual)
         global CuadriculaCeldas
         CuadriculaCeldas = tk.Frame(bg="black",relief="solid",bd=2)
         CuadriculaCeldas.place(x=150,y=60)
@@ -1932,6 +2057,8 @@ def ValidarJuego():
     global MisSegundos
     global destructor
     global destructorDerelojes
+    global botonSoluciones
+    botonSoluciones.destroy()
     if(AnalisisCompleto()==True):
         if(MiReloj==True):
             destructor = True
@@ -2003,11 +2130,14 @@ def OtroJuego():
     global destructor
     global Sonido
     global TableroDeJuego
+    global botonSoluciones
+    
     if(MiReloj==True):
         PausarReloj = False
     if(MiTimer==True):
         PausarTimer = False
     if messagebox.askyesno("Otra partida","Seguro que desea iniciar una partida nueva?"):
+        botonSoluciones.destroy()
         if(MiReloj==True):
             destructor = True
         MisHoras = "00"
@@ -2051,11 +2181,13 @@ def ReiniciarJuego():
     global MisMinutos
     global MisSegundos
     global destructor
+    global botonSoluciones
     if(MiReloj==True):
         PausarReloj = False
     if(MiTimer==True):
         PausarTimer = False
     if messagebox.askyesno("Reiniciar","Seguro que desea reiniciar esta partida?"):
+        botonSoluciones.destroy()
         if(MiReloj==True):
             destructor = True
         MisHoras = "00"
@@ -2098,11 +2230,13 @@ def TerminarJuego():
     global destructorDerelojes
     global CuadriculaCeldas
     global TableroFilasColumnas
+    global botonSoluciones
     if(MiReloj==True):
         PausarReloj = False
     if(MiTimer==True):
         PausarTimer = False
     if messagebox.askyesno("Finalizar","Seguro que desea finalizar el juego actual?"):
+        botonSoluciones.destroy()
         destructor = True
         destructorDerelojes = True
         MisHoras = "00"
