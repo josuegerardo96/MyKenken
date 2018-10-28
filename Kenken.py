@@ -552,6 +552,7 @@ if("MenuTable"=="MenuTable"):
             global MisSegundos
             global MiReloj
             global MiTimer
+            global multitamano
             MisHoras = EntradaParaHorasTimer.get()
             MisMinutos = EntradaParaMinutosTimer.get()
             MisSegundos = EntradaParaSegundosTimer.get()
@@ -579,6 +580,12 @@ if("MenuTable"=="MenuTable"):
                     MisSegundos = "0"+str(MisSegundos)
                 else:
                     MisSegundos = str(MisSegundos)
+
+            elif(multitamano=='mutamON'):
+                MisHoras = '02'
+                MisMinutos = '00'
+                MisSegundos = '00'
+
             elif(MiReloj!=True):
                 MiReloj = False
                 MiTimer = False
