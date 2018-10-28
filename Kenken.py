@@ -63,6 +63,8 @@ TableroDeJuego = ListConfig[3]
 TableroFilasColumnas=ListConfig[4]
 
 LaCancion = ListConfig[5]
+
+multitamano = ListConfig[6]
 #-.....................................................................SECCION DE FUNCIONES ...............................................................
 if("MenuTable"=="MenuTable"):
     def IrAConfiguracion():
@@ -269,8 +271,12 @@ if("MenuTable"=="MenuTable"):
 
             def TipoCuadricula(texto):
                 global TableroDeJuego
+                global multitamano
                 global TableroFilasColumnas
-                TableroDeJuego = texto
+                if(texto=='Multitamaño'):
+                    TableroDeJuego='3x3'
+                else:
+                    TableroDeJuego = texto
                 avrir = open('kenken_configuracion.dat','rb')
                 while True:
                     try:
@@ -283,8 +289,34 @@ if("MenuTable"=="MenuTable"):
                 avrir = open('kenken_configuracion.dat','wb')
                 pickle.dump(datos,avrir)
                 avrir.close()
+                if(texto=='Multitamaño'):
+                    TableroDeJuego ='3x3'
+                    Cuadricula3x3.config(bg="#E25050")
+                    Cuadricula4x4.config(bg="#E25050")
+                    Cuadricula5x5.config(bg="#E25050")
+                    Cuadricula6x6.config(bg="#E25050")
+                    Cuadricula7x7.config(bg="#E25050")
+                    Cuadricula8x8.config(bg="#E25050")
+                    Cuadricula9x9.config(bg="#E25050")
+                    CuadriculaMutam.config(bg="#2ED60C")
+                    avrir = open('kenken_configuracion.dat','rb')
+                    while True:
+                        try:
+                            datos = pickle.load(avrir)
+                        except EOFError:
+                            break
+                    avrir.close()
+                    datos.pop(4)
+                    datos.insert(4,[6,3])
+                    datos.pop(6)
+                    datos.insert(6,'mutamON')
+                    avrir = open('kenken_configuracion.dat','wb')
+                    pickle.dump(datos,avrir)
+                    avrir.close()
+                    multitamano = 'mutamON'
+                    TableroFilasColumnas=[6,3]
 
-                if(texto=='3x3'):
+                elif(texto=='3x3'):
                     Cuadricula3x3.config(bg="#2ED60C")
                     Cuadricula4x4.config(bg="#E25050")
                     Cuadricula5x5.config(bg="#E25050")
@@ -292,6 +324,7 @@ if("MenuTable"=="MenuTable"):
                     Cuadricula7x7.config(bg="#E25050")
                     Cuadricula8x8.config(bg="#E25050")
                     Cuadricula9x9.config(bg="#E25050")
+                    CuadriculaMutam.config(bg='#E25050')
 
                     avrir = open('kenken_configuracion.dat','rb')
                     while True:
@@ -302,9 +335,12 @@ if("MenuTable"=="MenuTable"):
                     avrir.close()
                     datos.pop(4)
                     datos.insert(4,[6,3])
+                    datos.pop(6)
+                    datos.insert(6,'mutamOFF')
                     avrir = open('kenken_configuracion.dat','wb')
                     pickle.dump(datos,avrir)
                     avrir.close()
+                    multitamano = 'mutamOFF'
                     TableroFilasColumnas=[6,3]
                 elif(texto=='4x4'):
                     Cuadricula3x3.config(bg="#E25050")
@@ -314,6 +350,7 @@ if("MenuTable"=="MenuTable"):
                     Cuadricula7x7.config(bg="#E25050")
                     Cuadricula8x8.config(bg="#E25050")
                     Cuadricula9x9.config(bg="#E25050")
+                    CuadriculaMutam.config(bg="#E25050")
                     avrir = open('kenken_configuracion.dat','rb')
                     while True:
                         try:
@@ -323,9 +360,12 @@ if("MenuTable"=="MenuTable"):
                     avrir.close()
                     datos.pop(4)
                     datos.insert(4,[8,4])
+                    datos.pop(6)
+                    datos.insert(6,'mutamOFF')
                     avrir = open('kenken_configuracion.dat','wb')
                     pickle.dump(datos,avrir)
                     avrir.close()
+                    multitamano = 'mutamOFF'
                     TableroFilasColumnas =[8,4]
                 elif(texto=='5x5'):
                     Cuadricula3x3.config(bg="#E25050")
@@ -335,6 +375,7 @@ if("MenuTable"=="MenuTable"):
                     Cuadricula7x7.config(bg="#E25050")
                     Cuadricula8x8.config(bg="#E25050")
                     Cuadricula9x9.config(bg="#E25050")
+                    CuadriculaMutam.config(bg="#E25050")
                     avrir = open('kenken_configuracion.dat','rb')
                     while True:
                         try:
@@ -344,9 +385,12 @@ if("MenuTable"=="MenuTable"):
                     avrir.close()
                     datos.pop(4)
                     datos.insert(4,[10,5])
+                    datos.pop(6)
+                    datos.insert(6,'mutamOFF')
                     avrir = open('kenken_configuracion.dat','wb')
                     pickle.dump(datos,avrir)
                     avrir.close()
+                    multitamano = 'mutamOFF'
                     TableroFilasColumnas=[10,5]
                 elif(texto=='6x6'):
                     Cuadricula3x3.config(bg="#E25050")
@@ -356,6 +400,7 @@ if("MenuTable"=="MenuTable"):
                     Cuadricula7x7.config(bg="#E25050")
                     Cuadricula8x8.config(bg="#E25050")
                     Cuadricula9x9.config(bg="#E25050")
+                    CuadriculaMutam.config(bg="#E25050")
                     avrir = open('kenken_configuracion.dat','rb')
                     while True:
                         try:
@@ -365,9 +410,13 @@ if("MenuTable"=="MenuTable"):
                     avrir.close()
                     datos.pop(4)
                     datos.insert(4,[12,6])
+                    datos.pop(6)
+                    datos.insert(6,'mutamOFF')
                     avrir = open('kenken_configuracion.dat','wb')
                     pickle.dump(datos,avrir)
                     avrir.close()
+                    multitamano = 'mutamOFF'
+                    TableroFilasColumnas=[12,6]
                 elif(texto=='7x7'):
                     Cuadricula3x3.config(bg="#E25050")
                     Cuadricula4x4.config(bg="#E25050")
@@ -376,6 +425,7 @@ if("MenuTable"=="MenuTable"):
                     Cuadricula7x7.config(bg="#2ED60C")
                     Cuadricula8x8.config(bg="#E25050")
                     Cuadricula9x9.config(bg="#E25050")
+                    CuadriculaMutam.config(bg="#E25050")
                     avrir = open('kenken_configuracion.dat','rb')
                     while True:
                         try:
@@ -385,9 +435,12 @@ if("MenuTable"=="MenuTable"):
                     avrir.close()
                     datos.pop(4)
                     datos.insert(4,[14,7])
+                    datos.pop(6)
+                    datos.insert(6,'mutamOFF')
                     avrir = open('kenken_configuracion.dat','wb')
                     pickle.dump(datos,avrir)
                     avrir.close()
+                    multitamano = 'mutamOFF'
                     TableroFilasColumnas = [14,7]
                 elif(texto=='8x8'):
                     Cuadricula3x3.config(bg="#E25050")
@@ -397,6 +450,7 @@ if("MenuTable"=="MenuTable"):
                     Cuadricula7x7.config(bg="#E25050")
                     Cuadricula8x8.config(bg="#2ED60C")
                     Cuadricula9x9.config(bg="#E25050")
+                    CuadriculaMutam.config(bg="#E25050")
                     avrir = open('kenken_configuracion.dat','rb')
                     while True:
                         try:
@@ -406,9 +460,12 @@ if("MenuTable"=="MenuTable"):
                     avrir.close()
                     datos.pop(4)
                     datos.insert(4,[16,8])
+                    datos.pop(6)
+                    datos.insert(6,'mutamOFF')
                     avrir = open('kenken_configuracion.dat','wb')
                     pickle.dump(datos,avrir)
                     avrir.close()
+                    multitamano='mutamOFF'
                     TableroFilasColumnas = [16,8]
                 elif(texto=='9x9'):
                     Cuadricula3x3.config(bg="#E25050")
@@ -418,6 +475,7 @@ if("MenuTable"=="MenuTable"):
                     Cuadricula7x7.config(bg="#E25050")
                     Cuadricula8x8.config(bg="#E25050")
                     Cuadricula9x9.config(bg="#2ED60C")
+                    CuadriculaMutam.config(bg="#E25050")
                     avrir = open('kenken_configuracion.dat','rb')
                     while True:
                         try:
@@ -427,9 +485,12 @@ if("MenuTable"=="MenuTable"):
                     avrir.close()
                     datos.pop(4)
                     datos.insert(4,[18,9])
+                    datos.pop(6)
+                    datos.insert(6,'mutamOFF')
                     avrir = open('kenken_configuracion.dat','wb')
                     pickle.dump(datos,avrir)
                     avrir.close()
+                    multitamano='mutamOFF'
                     TableroFilasColumnas = [18,9]
 
         class EntradaTimer:
@@ -666,7 +727,7 @@ if("MenuTable"=="MenuTable"):
 
 
         global TableroDeJuego
-
+        global multitamano
         labelCua = tk.Label(vMenu, text="En que cuadricula desea jugar: ",bg="#F7DC6F", font=('Helvetica',10,'italic bold'))
         labelCua.place(x=450,y=110)
 
@@ -691,7 +752,13 @@ if("MenuTable"=="MenuTable"):
         Cuadricula9x9 = tk.Button(vMenu,text="9x9",width=10,relief="groove",bg='#E25050',command=lambda: Configuracion.TipoCuadricula(Cuadricula9x9['text']))
         Cuadricula9x9.place(x=510,y=380)
 
-        if(TableroDeJuego=='3x3'):
+        CuadriculaMutam = tk.Button(vMenu,text="Multitamaño",width=10,relief="groove",bg='#E25050',command=lambda: Configuracion.TipoCuadricula(CuadriculaMutam['text']))
+        CuadriculaMutam.place(x=510,y=420)
+
+
+        if(multitamano=='mutamON'):
+            CuadriculaMutam.config(bg="#2ED60C")
+        elif(TableroDeJuego=='3x3'):
             Cuadricula3x3.config(bg="#2ED60C")
         elif(TableroDeJuego=='4x4'):
             Cuadricula4x4.config(bg='#2ED60C')
@@ -2052,11 +2119,20 @@ if("Analizar"=="Analizar"):
                         PausarReloj = False
                     if(MiTimer==True):
                         PausarTimer = False
-                    if(Sonido=="ConSonido"):
-                        mixer.music.stop()
-                        mixer.music.load("nivelcompletado.mp3")
-                        mixer.music.play()
-                    messagebox.showinfo("Ganaste","GANASTE!!! MUCHAS FELICIDADES")
+                    global multitamano
+                    global TableroDeJuego
+                    if(multitamano=='mutamON' and TableroDeJuego=='9x9'):
+                        if(Sonido=="ConSonido"):
+                            mixer.music.stop()
+                            mixer.music.load("nivelcompletado.mp3")
+                            mixer.music.play()
+                        messagebox.showinfo("Ganaste","GANASTE!!! MUCHAS FELICIDADES")
+                    elif(multitamano!='mutamON'):
+                        if(Sonido=="ConSonido"):
+                            mixer.music.stop()
+                            mixer.music.load("nivelcompletado.mp3")
+                            mixer.music.play()
+                        messagebox.showinfo("Ganaste","GANASTE!!! MUCHAS FELICIDADES")
                     return True
 
 #-----------------------------------INICIAR COMANDOS PARA BOTONES DE JUEGO------------------------------------------------------
@@ -2131,9 +2207,40 @@ def ValidarJuego():
     global destructor
     global destructorDerelojes
     global botonSoluciones
+    global multitamano
+    global TableroFilasColumnas
+    global TableroDeJuego
     if(AnalisisCompleto()==True):
         BIniciarJuego.focus_set()
-        if(MiReloj==True):
+        if(multitamano=='mutamON' and TableroDeJuego!='9x9'):
+            for r in range(TableroFilasColumnas[0]):
+                lista = []
+                for c in range(TableroFilasColumnas[1]):
+                    if(r!=0 and r%2!=0):
+                        DatoEnEntrada = CuadriculaCeldas.grid_slaves(row=r,column=c)[0]
+                        DatoEnEntrada.destroy()
+            CuadriculaCeldas.place_forget()       
+            actualTablero = TableroDeJuego[0]
+            actualTablero = int(actualTablero)
+            stab = actualTablero+1
+            TableroDeJuego = str(stab)+"x"+str(stab)
+            TableroFilasColumnas.pop(0)
+            TableroFilasColumnas.pop(0)
+            TableroFilasColumnas.append(actualTablero*2)
+            TableroFilasColumnas.append(actualTablero)
+            Cuadricula(GeneradorJuego())
+            if(MiReloj==True):
+                AparecerPausador()
+                ActualizarTiempo.PausarTiempo()
+            elif(MiTimer==True):
+                if(MisHoras=="00" and MisMinutos=="00" and MisSegundos=="00"):
+                    MiTimer=False
+                    MiReloj=False
+                else:
+                    AparecerPausador()
+                    ActualizarTimer.PausarTiempo()
+
+        elif(MiReloj==True):
             destructor = True
             destructorDerelojes = True
             MisHoras = "00"
@@ -2188,6 +2295,12 @@ def ValidarJuego():
             if(Sonido=="ConSonido"):
                 mixer.music.stop()
             JuegoFinalizado = True
+        BIniciarJuego.focus_set()
+        if(MiTimer==True or MiReloj==True):
+            BotonPausarTiempo.destroy()
+
+
+
 
 def OtroJuego():
     global CuadriculaCeldas
@@ -2204,18 +2317,19 @@ def OtroJuego():
     global Sonido
     global TableroDeJuego
     global botonSoluciones
-    
+    global multitamano
     if(MiReloj==True):
         PausarReloj = False
     if(MiTimer==True):
         PausarTimer = False
     if messagebox.askyesno("Otra partida","Seguro que desea iniciar una partida nueva?"):
         botonSoluciones.destroy()
-        if(MiReloj==True):
-            destructor = True
-        MisHoras = "00"
-        MisMinutos = "00"
-        MisSegundos = "00"
+        if(multitamano!='mutamON'):
+            if(MiReloj==True):
+                destructor = True
+            MisHoras = "00"
+            MisMinutos = "00"
+            MisSegundos = "00"
         for r in range(TableroFilasColumnas[0]):
             lista = []
             for c in range(TableroFilasColumnas[1]):
@@ -2255,17 +2369,19 @@ def ReiniciarJuego():
     global MisSegundos
     global destructor
     global botonSoluciones
+    global multitamano
     if(MiReloj==True):
         PausarReloj = False
     if(MiTimer==True):
         PausarTimer = False
     if messagebox.askyesno("Reiniciar","Seguro que desea reiniciar esta partida?"):
         botonSoluciones.destroy()
-        if(MiReloj==True):
-            destructor = True
-        MisHoras = "00"
-        MisMinutos = "00"
-        MisSegundos = "00"
+        if(multitamano!='mutamON'):
+            if(MiReloj==True):
+                destructor = True
+            MisHoras = "00"
+            MisMinutos = "00"
+            MisSegundos = "00"
         for r in range(TableroFilasColumnas[0]):
             lista = []
             for c in range(TableroFilasColumnas[1]):
