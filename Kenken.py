@@ -613,11 +613,11 @@ if("MenuTable"=="MenuTable"):
         CrashBoton = tk.Button(vMenu,relief="groove",bg='#E25050',text="Crash", command=lambda: Configuracion.ConMusica(CrashBoton['text']))
         CrashBoton.place(x=30,y=500)
         marioBoton = tk.Button(vMenu,relief="groove",bg='#E25050',text="Mario", command=lambda: Configuracion.ConMusica(marioBoton['text']))
-        marioBoton.place(x=110,y=500)
+        marioBoton.place(x=100,y=500)
         spidermanboton = tk.Button(vMenu,relief="groove",bg='#E25050',text="Spider-man", command=lambda: Configuracion.ConMusica(spidermanboton['text']))
-        spidermanboton.place(x=180,y=500)
+        spidermanboton.place(x=170,y=500)
         jumpshotBoton = tk.Button(vMenu,relief="groove",bg='#E25050',text="Jumpshot", command=lambda: Configuracion.ConMusica(jumpshotBoton['text']))
-        jumpshotBoton.place(x=280,y=500)
+        jumpshotBoton.place(x=270,y=500)
 
         Configuracion.ConMusica(LaCancion)
 
@@ -1175,7 +1175,7 @@ if("Cuadricula"=="Cuadricula"):
         TamJuego=TableroDeJuego[0]
         TamJuego = int(TamJuego)
         return posiblesSoluciones(TamJuego,numTuplas,signo,numeroOp)
-        global botonSoluciones
+        
 
     def FrameSoluciones(Psoluciones):
         global FrameSol
@@ -2041,6 +2041,8 @@ def IniciarJuego():
     if(Sonido=="ConSonido"):
         mixer.music.load(LaCancion)
         mixer.music.play(-1)
+    w = CuadriculaCeldas.grid_slaves(row=1,column=0)[0]
+    w.focus_set()
     
 def ValidarJuego():
     global NombreJugador
@@ -2058,8 +2060,8 @@ def ValidarJuego():
     global destructor
     global destructorDerelojes
     global botonSoluciones
-    botonSoluciones.destroy()
     if(AnalisisCompleto()==True):
+        BIniciarJuego.focus_set()
         if(MiReloj==True):
             destructor = True
             destructorDerelojes = True
