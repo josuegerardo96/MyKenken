@@ -820,7 +820,7 @@ if("MenuTable"=="MenuTable"):
             PalabrasParaElUsuario=tk.Label(vAyuda,bg="#FFF8A6",text="Para disfrutar mejor la experiencia del juego\n se recomienda leer el manual de usuario:",pady=28,font=("Arial",13,"italic bold"))
             PalabrasParaElUsuario.pack()
             photodescargar = tk.PhotoImage(file="descargarnube.png")
-            BotonDescarga = tk.Button(vAyuda,image=photodescargar,command=AyudaAlUsuario.IrAlManual, bg="#FFF8A6",bd=0, cursor="hand2")
+            BotonDescarga = tk.Button(vAyuda,image=photodescargar,command=AyudaAlUsuario.IrAlManual,activebackground='#FFF8A6', bg="#FFF8A6",bd=0, cursor="hand2")
             BotonDescarga.pack()
             LabDes = tk.Label(vAyuda,text="descargar",font=("Arial",9,"italic bold"), bg="#FFF8A6")
             LabDes.pack()
@@ -838,9 +838,9 @@ if("MenuTable"=="MenuTable"):
             vAcerca.config(bg="#FFF8A6")
             NombrePrograma = tk.Label(vAcerca,bg="#FFF8A6",text="Nombre: KenKen",pady=20)
             NombrePrograma.pack()
-            versionPrograma = tk.Label(vAcerca,bg="#FFF8A6",text="Versión 1.0",pady=20)
+            versionPrograma = tk.Label(vAcerca,bg="#FFF8A6",text="Versión 2.0",pady=20)
             versionPrograma.pack()
-            fechaCreacion = tk.Label(vAcerca,bg="#FFF8A6",text="Fecha de creación: 13 de octubre del 2018",pady=20)
+            fechaCreacion = tk.Label(vAcerca,bg="#FFF8A6",text="Fecha de creación: 29 de octubre del 2018",pady=20)
             fechaCreacion.pack()
             NombreAutor = tk.Label(vAcerca,bg="#FFF8A6",text="Autor: Josué Gerardo Gutiérrez Mora",pady=20)
             NombreAutor.pack()
@@ -1297,6 +1297,7 @@ if("Cuadricula"=="Cuadricula"):
         widgetEncendido = True
         widget = CuadriculaCeldas.grid_slaves(row=r, column=c)[0]
         widget.config(bg="#E3FACF")
+
         wid = CuadriculaCeldas.grid_slaves(row=r-1,column=c)[0]
         wid.config(bg="#E3FACF")
         Psoluciones = buscaSoluciones(JuegoActual,(r,c))
@@ -1655,7 +1656,6 @@ def validarNombre():
         BotonIrAConfiguracion.config(state="normal")
         if(MiTimer == True):
             IrAConfiguracion()
-
 
 def AparecerReloj():
     if(MiReloj==True and MiTimer==False):
@@ -2610,6 +2610,9 @@ BotonBorrarJuego.pack(side="left")
 EntradaNombreLabel = tk.Label(vPrincipal, text="Nombre del jugador (obligatorio)", font=("Arial",8), bg="#F7DC6F")
 EntradaNombreLabel.place(x=150,y=530)
 
+EntradaNombre = tk.Entry(vPrincipal, justify="center", width=45, relief="groove", bg="#FF5733")
+EntradaNombre.place(x=100, y=550)
+
 BValidarNombre = tk.Button(vPrincipal,text="Validar usuario", width=12, relief="groove", bg="#70E349", command=validarNombre)
 BValidarNombre.place(x=190,y=575)
 
@@ -2632,11 +2635,21 @@ BReiniciarJuego.place(x=450,y=470)
 BTerminarJuego = tk.Button(vPrincipal, state="disabled", text="Terminar juego", width=15, relief="groove",bg="#FFA2A2", command=TerminarJuego)
 BTerminarJuego.place(x=580,y=470)
 
+#-------------------------------------------------------------TOP 10------------------------------------------------------------------------
+
 BTop10 = tk.Button(vPrincipal, text="TOP 10", pady=10,relief="groove", width=20, bg="#FF3333", command=AbrirTop)
 BTop10.place(x=445, y=540)
 
-EntradaNombre = tk.Entry(vPrincipal, justify="center", width=45, relief="groove", bg="#FF5733")
-EntradaNombre.place(x=100, y=550)
+#-------------------------------------------------------------UNDO REDO----------------------------------------------------------------------
+
+photoUndo = tk.PhotoImage(file='undo.png')
+BunDo = tk.Button(vPrincipal,image=photoUndo,bg='#F7DC6F',activebackground='#F7DC6F',bd=0,state='disabled')
+BunDo.place(x=700,y=530)
+
+photoRedo = tk.PhotoImage(file="redo.png")
+BreDo = tk.Button(vPrincipal,image=photoRedo,bg='#F7DC6F',activebackground='#F7DC6F',bd=0,state='disabled')
+BreDo.place(x=800,y=530)
+
 if(ActualizarTablero==True):
     EntradaNombre.insert('end',NombreJugador)
     validarNombre()
