@@ -82,7 +82,7 @@ moverEnL = len(ListaJu)-1
 
 
 if(CarLis!=""):
-    if(messagebox.askyesno('Cargar juego','Ha guardado un juego inconcluso\n ¿desea continuarlo?')):
+    if(messagebox.askyesno('Cargar juego','Tiene un juego guardado \n ¿desea iniciar desde ese punto?')):
         TableroDeJuego=CarLis[0]
         TableroFilasColumnas=CarLis[1]
         NombreJugador=CarLis[2]
@@ -1344,11 +1344,12 @@ if("Cuadricula"=="Cuadricula"):
         c = 0
         for z in range(12):
             for x in range(5):
-                soltex = str(Psoluciones[c])
-                soltex = soltex.replace('(',"")
-                soltex = soltex.replace(')',"")
-                labeSol = tk.Label(FrameSol,text=soltex,bg="#A51F1F",fg="#F7DC6F", relief="groove", font=('Helvetica',12,'italic bold'),padx=5)
-                labeSol.grid(row=z,column=x,padx=1,pady=2)
+                if(c<len(Psoluciones)):
+                    soltex = str(Psoluciones[c])
+                    soltex = soltex.replace('(',"")
+                    soltex = soltex.replace(')',"")
+                    labeSol = tk.Label(FrameSol,text=soltex,bg="#A51F1F",fg="#F7DC6F", relief="groove", font=('Helvetica',12,'italic bold'),padx=5)
+                    labeSol.grid(row=z,column=x,padx=1,pady=2)
                 c = c + 1
 
     def CasillaEnfocada(r,c):
@@ -1426,8 +1427,6 @@ if("Cuadricula"=="Cuadricula"):
     photo = tk.PhotoImage(file="borrador.png")
     Bborrador = tk.Button(vPrincipal,font=("Helvetica",15), image=photo,background="#34FEAF",relief="groove", text="Borrar",padx=10,command=lambda: insertador(Bborrador['text']))
     Bborrador.place(x=18,y=200)
-
-
 
     def colored(Dic,Coordenadas):
         contaDic=1
@@ -1513,10 +1512,14 @@ if("Cuadricula"=="Cuadricula"):
 
     def Cuadricula(JuegoActual):
         global CuadriculaCeldas
+        global TableroFilasColumnas
         CuadriculaCeldas = tk.Frame(bg="black",relief="solid",bd=2)
         CuadriculaCeldas.place(x=150,y=60)
         global TableroDeJuego
         if(TableroDeJuego=='3x3'):
+            TableroFilasColumnas.clear()
+            TableroFilasColumnas.append(6)
+            TableroFilasColumnas.append(3)
             Bnumero1.config(state="normal")
             Bnumero2.config(state="normal")
             Bnumero3.config(state="normal")
@@ -1542,6 +1545,9 @@ if("Cuadricula"=="Cuadricula"):
                         Entrada.bind("<FocusOut>",lambda event,color=coloreado, r=r, c=c: CasillaDesenfocada(color,r,c))
 
         elif(TableroDeJuego=='4x4'):
+            TableroFilasColumnas.clear()
+            TableroFilasColumnas.append(8)
+            TableroFilasColumnas.append(4)
             Bnumero1.config(state="normal")
             Bnumero2.config(state="normal")
             Bnumero3.config(state="normal")
@@ -1567,6 +1573,9 @@ if("Cuadricula"=="Cuadricula"):
                         Entrada.bind("<FocusOut>",lambda event,color=coloreado, r=r, c=c: CasillaDesenfocada(color,r,c))
 
         elif(TableroDeJuego=='5x5'):
+            TableroFilasColumnas.clear()
+            TableroFilasColumnas.append(10)
+            TableroFilasColumnas.append(5)
             Bnumero1.config(state="normal")
             Bnumero2.config(state="normal")
             Bnumero3.config(state="normal")
@@ -1592,6 +1601,9 @@ if("Cuadricula"=="Cuadricula"):
                         Entrada.bind("<FocusOut>",lambda event,color=coloreado, r=r, c=c: CasillaDesenfocada(color,r,c))
 
         elif(TableroDeJuego=='6x6'):
+            TableroFilasColumnas.clear()
+            TableroFilasColumnas.append(12)
+            TableroFilasColumnas.append(6)
             Bnumero1.config(state="normal")
             Bnumero2.config(state="normal")
             Bnumero3.config(state="normal")
@@ -1618,6 +1630,9 @@ if("Cuadricula"=="Cuadricula"):
 
 
         elif(TableroDeJuego=='7x7'):
+            TableroFilasColumnas.clear()
+            TableroFilasColumnas.append(14)
+            TableroFilasColumnas.append(7)
             Bnumero1.config(state="normal")
             Bnumero2.config(state="normal")
             Bnumero3.config(state="normal")
@@ -1643,6 +1658,9 @@ if("Cuadricula"=="Cuadricula"):
                         Entrada.bind("<FocusOut>",lambda event,color=coloreado, r=r, c=c: CasillaDesenfocada(color,r,c))
 
         elif(TableroDeJuego=='8x8'):
+            TableroFilasColumnas.clear()
+            TableroFilasColumnas.append(16)
+            TableroFilasColumnas.append(8)
             Bnumero1.config(state="normal")
             Bnumero2.config(state="normal")
             Bnumero3.config(state="normal")
@@ -1668,6 +1686,9 @@ if("Cuadricula"=="Cuadricula"):
                         Entrada.bind("<FocusOut>",lambda event,color=coloreado, r=r, c=c: CasillaDesenfocada(color,r,c))
 
         elif(TableroDeJuego=='9x9'):
+            TableroFilasColumnas.clear()
+            TableroFilasColumnas.append(18)
+            TableroFilasColumnas.append(9)
             Bnumero1.config(state="normal")
             Bnumero2.config(state="normal")
             Bnumero3.config(state="normal")
@@ -1696,7 +1717,6 @@ if("Cuadricula"=="Cuadricula"):
         if(ActualizarTablero==True):
             global CCordenadas
             global NumerosTab
-            global TableroFilasColumnas
             e = 0
             for r in range(TableroFilasColumnas[0]):
                 for c in range(TableroFilasColumnas[1]):
@@ -2347,6 +2367,7 @@ def ValidarJuego():
     global TableroFilasColumnas
     global TableroDeJuego
     global ListaJu
+    global ActualizarTablero
     global moverEnL
     if(AnalisisCompleto()==True):
         BIniciarJuego.focus_set()
@@ -2356,13 +2377,14 @@ def ValidarJuego():
         BreDo.config(state='disabled')
         moverEnL = len(ListaJu)-1
         if(multitamano=='mutamON' and TableroDeJuego!='9x9'):
+            BotonGuardarJuego.config(state='normal')
             for r in range(TableroFilasColumnas[0]):
                 lista = []
                 for c in range(TableroFilasColumnas[1]):
                     if(r!=0 and r%2!=0):
                         DatoEnEntrada = CuadriculaCeldas.grid_slaves(row=r,column=c)[0]
                         DatoEnEntrada.destroy()
-            CuadriculaCeldas.place_forget()       
+            CuadriculaCeldas.place_forget()   
             actualTablero = TableroDeJuego[0]
             actualTablero = int(actualTablero)
             stab = actualTablero+1
@@ -2488,6 +2510,7 @@ def OtroJuego():
         NuevoJuego = GeneradorJuego2(JuegoActual)
         Cuadricula(NuevoJuego)
         CuadriculaCeldas.place(x=150,y=60)
+        ActualizarActualT()
         if(MiReloj==True):
             PausarReloj = True
         if(MiTimer==True):
@@ -2547,6 +2570,7 @@ def ReiniciarJuego():
         CuadriculaCeldas.place_forget()
         Cuadricula(JuegoActual)
         CuadriculaCeldas.place(x=150,y=60)
+        ActualizarActualT()
         if(MiReloj==True):
             PausarReloj = True
         if(MiTimer==True):
@@ -2642,7 +2666,7 @@ def GuardameTablero():
     global MisMinutos
     global MisSegundos
     global numRandom
-
+    print(TableroFilasColumnas)
     NumsEntradas = []
     listaCoordenadas = []
     for r in range(TableroFilasColumnas[0]):
