@@ -129,6 +129,12 @@ if("MenuTable"=="MenuTable"):
             def ConReloj():
                 global MiReloj
                 global MiTimer
+                global MisHoras
+                global MisMinutos
+                global MisSegundos
+                MisMinutos = '00'
+                MisHoras = '00'
+                MisSegundos = '00'
                 MiReloj = True
                 MiTimer = False
                 BConReloj.config(bg="#2ED60C")
@@ -530,6 +536,7 @@ if("MenuTable"=="MenuTable"):
                 global MisHoras
                 global MisMinutos
                 global MisSegundos
+
                 f = EntradaParaHorasTimer.get()
                 s = str(f)
                 if(s==""):
@@ -569,6 +576,7 @@ if("MenuTable"=="MenuTable"):
                 s = str(f)
                 if(s==""):
                     EntradaParaSegundosTimer.insert("end","00")
+                print(ActualizarTablero)
                 f = int(f)
                 if(f>59 or f<0):
                     messagebox.showerror("Error","Error, los segundos deben estar entre 0 y 59")
@@ -628,6 +636,10 @@ if("MenuTable"=="MenuTable"):
         global DificultadJuego
         global Sonido
         global LaCancion
+        global ActualizarTablero
+        global MisHoras
+        global MisMinutos
+        global MisSegundos
 
         Introduccion = tk.Label(vMenu,bg="#F7DC6F",text="Haga aquí la configuración del juego a su gusto\n si selecciona el cronometro utilice el botón para enviar los datos\n de lo contrario seleccione su opción y cierre la venta :)",pady=20).pack()
 
@@ -679,18 +691,27 @@ if("MenuTable"=="MenuTable"):
         EntradaParaHorasTimer.bind("<FocusOut>",EntradaTimer.EntradaHoras)
         EntradaParaHorasTimer.bind("<FocusIn>",EntradaTimer.EntradaHoras2)
         EntradaParaHorasTimer.insert("end","00")
+        if(ActualizarTablero==True):
+            EntradaParaHorasTimer.delete('0','end')
+            EntradaParaHorasTimer.insert('end',MisHoras)
 
         EntradaParaMinutosTimer = tk.Entry(vMenu, width=3, bg="white", font=("Helvetica",20,"italic bold"),bd=0, justify="center")
         EntradaParaMinutosTimer.place(x=195,y=280)
         EntradaParaMinutosTimer.bind("<FocusOut>",EntradaTimer.EntradaMinutos)
         EntradaParaMinutosTimer.bind("<FocusIn>",EntradaTimer.EntradaMinutos2)
         EntradaParaMinutosTimer.insert("end","00")
+        if(ActualizarTablero==True):
+            EntradaParaMinutosTimer.delete('0','end')
+            EntradaParaMinutosTimer.insert('end',MisMinutos)
 
         EntradaParaSegundosTimer = tk.Entry(vMenu, width=3, bg="white", font=("Helvetica",20,"italic bold"),bd=0, justify="center")
         EntradaParaSegundosTimer.place(x=265,y=280)
         EntradaParaSegundosTimer.bind("<FocusOut>",EntradaTimer.EntradaSegundos)
         EntradaParaSegundosTimer.bind("<FocusIn>",EntradaTimer.EntradaSegundos2)
         EntradaParaSegundosTimer.insert("end","00")
+        if(ActualizarTablero==True):
+            EntradaParaSegundosTimer.delete('0','end')
+            EntradaParaSegundosTimer.insert('end',MisSegundos)
 
         TimerListo = tk.Button(vMenu, relief="groove", bg ="#A1E889", text="Jugar con cronometro", command=MeterDatos, width=18)
         TimerListo.place(x=130,y=350)
@@ -956,7 +977,7 @@ if("Relojes"=="Relojes"):
             global Bborrador
             if(PausarReloj == False):
                 PausarReloj = True
-                BotonPausarTiempo.config(text="Pausar",bg="#34FEF5")
+                BotonPausarTiempo.config(text="Pausar",bg="#00FFAE")
                 Bnumero1.config(state="normal")
                 Bnumero2.config(state="normal")
                 Bnumero3.config(state="normal")
@@ -1363,7 +1384,7 @@ if("Cuadricula"=="Cuadricula"):
         wid.config(bg="#E3FACF")
         Psoluciones = buscaSoluciones(JuegoActual,(r,c))
         global botonSoluciones
-        botonSoluciones = tk.Button(vPrincipal,text="Ver soluciones \n para cuadricula",command=lambda: FrameSoluciones(Psoluciones),bg="#DEABF3",relief="groove")
+        botonSoluciones = tk.Button(vPrincipal,text="Ver soluciones para\nestas casillas",command=lambda: FrameSoluciones(Psoluciones),bg="#DEABF3",relief="groove")
         botonSoluciones.place(x=700,y=130)
 
     def CasillaDesenfocada(color,r,c):
@@ -1752,11 +1773,11 @@ def AparecerReloj():
 def AparecerPausador():
     global BotonPausarTiempo
     if(MiReloj==True and MiTimer==False):
-        BotonPausarTiempo = tk.Button(vPrincipal, text="Pausar", command=ActualizarTiempo.PausarTiempo, bg="#34FEF5",bd=5, relief="groove",width=13,state="normal")
-        BotonPausarTiempo.place(x=655,y=80)
+        BotonPausarTiempo = tk.Button(vPrincipal, text="Pausar", command=ActualizarTiempo.PausarTiempo, bg="#00FFAE",bd=2, relief="ridge",width=11,state="normal")
+        BotonPausarTiempo.place(x=663,y=75)
     elif(MiTimer==True and MiReloj==False):
-        BotonPausarTiempo = tk.Button(vPrincipal, text="Pausar", command=ActualizarTimer.PausarTiempo, bg="#34FEF5",bd=5, relief="groove",width=13,state="normal")
-        BotonPausarTiempo.place(x=655,y=80)
+        BotonPausarTiempo = tk.Button(vPrincipal, text="Pausar", command=ActualizarTimer.PausarTiempo, bg="#00FFAE",bd=2, relief="ridge",width=11,state="normal")
+        BotonPausarTiempo.place(x=663,y=75)
 
 class FuncionesTiempo:
     def ListaTiempo(lista):
@@ -2666,7 +2687,6 @@ def GuardameTablero():
     global MisMinutos
     global MisSegundos
     global numRandom
-    print(TableroFilasColumnas)
     NumsEntradas = []
     listaCoordenadas = []
     for r in range(TableroFilasColumnas[0]):
