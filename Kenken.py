@@ -77,6 +77,10 @@ while True:
         break
 avrir.close()
 
+ListaJu = []
+moverEnL = len(ListaJu)-1
+
+
 if(CarLis!=""):
     if(messagebox.askyesno('Cargar juego','Ha guardado un juego inconcluso\n ¿desea continuarlo?')):
         TableroDeJuego=CarLis[0]
@@ -89,6 +93,8 @@ if(CarLis!=""):
         CCordenadas = CarLis[6][1]
         numeradoRandom = CarLis[7]
         ActualizarTablero=True
+        vPrincipal.focus_force()
+    else:
         vPrincipal.focus_force()
 
 #-.....................................................................SECCION DE FUNCIONES ...............................................................
@@ -1178,6 +1184,62 @@ if("Cuadricula"=="Cuadricula"):
     FrameSol.place(x=640,y=200)
     FrameSol.place_forget()
 
+    def ActualizarActualT():
+        global TableroFilasColumnas
+        global ListaJu
+        global moverEnL
+        NumsEntradas = []
+        listaCoordenadas = []
+        ListNumCor = []
+        for r in range(TableroFilasColumnas[0]):
+            for c in range(TableroFilasColumnas[1]):
+                if(r!=0 and r%2!=0):
+                    m = CuadriculaCeldas.grid_slaves(row=r,column=c)[0]
+                    w = m.get()
+                    NumsEntradas.append(w)
+                    listaCoordenadas.append((r,c))
+        ListNumCor.append(NumsEntradas)
+        ListNumCor.append(listaCoordenadas)
+        ListaJu.append(ListNumCor)
+        moverEnL = len(ListaJu)-1
+        if(moverEnL>0):
+            BunDo.config(state='normal')
+        else:
+            BunDo.config(state='disabled')
+        if(moverEnL==len(ListaJu)-1):
+            BreDo.config(state='disabled')
+
+    def CambiaCuadricula(acCua):
+        global TableroFilasColumnas
+        e = 0
+        for r in range(TableroFilasColumnas[0]):
+            for c in range(TableroFilasColumnas[1]):
+                if(r!=0 and r%2!=0):
+                    q =CuadriculaCeldas.grid_slaves(row=r, column=c)[0]
+                    q.delete("0","end")
+                    q.insert('end',acCua[0][e])
+                    e=e+1
+
+    def MoverseEnCuadricula(dire):
+        global ListaJu
+        global moverEnL
+        Bnumero1.focus_set()
+        if(dire=='<-'):
+            moverEnL = moverEnL - 1
+            BreDo.config(state='normal')
+            if(moverEnL==0):
+                BunDo.config(state='disabled')
+            q = ListaJu[moverEnL]
+            CambiaCuadricula(q)
+        elif(dire=='->'):
+            moverEnL = moverEnL + 1
+            if(moverEnL >= len(ListaJu)-1):
+                moverEnL = len(ListaJu)-1
+                BreDo.config(state='disabled')
+                BunDo.config(state='normal')
+            q = ListaJu[moverEnL]
+            CambiaCuadricula(q)
+
     def posiblesSoluciones(TamCuadricula, Ncasillas, operacion, resultador):
         lista = []
         ListaSoluciones = []
@@ -1274,7 +1336,6 @@ if("Cuadricula"=="Cuadricula"):
         TamJuego = int(TamJuego)
         return posiblesSoluciones(TamJuego,numTuplas,signo,numeroOp)
         
-
     def FrameSoluciones(Psoluciones):
         global FrameSol
         FrameSol.destroy()
@@ -1297,7 +1358,6 @@ if("Cuadricula"=="Cuadricula"):
         widgetEncendido = True
         widget = CuadriculaCeldas.grid_slaves(row=r, column=c)[0]
         widget.config(bg="#E3FACF")
-
         wid = CuadriculaCeldas.grid_slaves(row=r-1,column=c)[0]
         wid.config(bg="#E3FACF")
         Psoluciones = buscaSoluciones(JuegoActual,(r,c))
@@ -1320,12 +1380,18 @@ if("Cuadricula"=="Cuadricula"):
     def insertador(w):
         global widget
         global widgetEncendido
+        global ListaJu
+        global moverEnL
         if(widgetEncendido==True):
             if(w=="Borrar"):
                 widget.delete("0","end")
             else:
                 widget.delete("0","end")
                 widget.insert("end",w)
+            if(moverEnL<len(ListaJu)):
+                ListaJu = ListaJu[0:moverEnL+1]
+            ActualizarActualT()
+            
         else:
             messagebox.showerror("Error","Ninguna casilla seleccionada")
 
@@ -1632,8 +1698,8 @@ if("Cuadricula"=="Cuadricula"):
             global NumerosTab
             global TableroFilasColumnas
             e = 0
-            for r in range(14):
-                for c in range(7):
+            for r in range(TableroFilasColumnas[0]):
+                for c in range(TableroFilasColumnas[1]):
                     if(r!=0 or r%2!=0):
                         if((r,c) in CCordenadas):
                             q = CuadriculaCeldas.grid_slaves(row=r, column=c)[0]
@@ -2258,7 +2324,8 @@ def IniciarJuego():
         mixer.music.load(LaCancion)
         mixer.music.play(-1)
     w = CuadriculaCeldas.grid_slaves(row=1,column=0)[0]
-    w.focus_set()    
+    w.focus_set()
+    ActualizarActualT()
     
 def ValidarJuego():
     global NombreJugador
@@ -2279,8 +2346,15 @@ def ValidarJuego():
     global multitamano
     global TableroFilasColumnas
     global TableroDeJuego
+    global ListaJu
+    global moverEnL
     if(AnalisisCompleto()==True):
         BIniciarJuego.focus_set()
+        ListaJu = []
+        BotonGuardarJuego.config(state='disabled')
+        BunDo.config(state='disabled')
+        BreDo.config(state='disabled')
+        moverEnL = len(ListaJu)-1
         if(multitamano=='mutamON' and TableroDeJuego!='9x9'):
             for r in range(TableroFilasColumnas[0]):
                 lista = []
@@ -2385,11 +2459,17 @@ def OtroJuego():
     global botonSoluciones
     global multitamano
     global ActualizarTablero
+    global ListaJu
+    global moverEnL
     if(MiReloj==True):
         PausarReloj = False
     if(MiTimer==True):
         PausarTimer = False
     if messagebox.askyesno("Otra partida","Seguro que desea iniciar una partida nueva?"):
+        ListaJu = []
+        BunDo.config(state='disabled')
+        BreDo.config(state='disabled')
+        moverEnL = len(ListaJu)-1
         ActualizarTablero = False
         botonSoluciones.destroy()
         if(multitamano!='mutamON'):
@@ -2439,11 +2519,17 @@ def ReiniciarJuego():
     global botonSoluciones
     global multitamano
     global ActualizarTablero
+    global ListaJu
+    global moverEnL
     if(MiReloj==True):
         PausarReloj = False
     if(MiTimer==True):
         PausarTimer = False
     if messagebox.askyesno("Reiniciar","Seguro que desea reiniciar esta partida?"):
+        ListaJu = []
+        BunDo.config(state='disabled')
+        BreDo.config(state='disabled')
+        moverEnL = len(ListaJu)-1
         ActualizarTablero = False
         botonSoluciones.destroy()
         if(multitamano!='mutamON'):
@@ -2491,12 +2577,18 @@ def TerminarJuego():
     global TableroFilasColumnas
     global botonSoluciones
     global ActualizarTablero
+    global ListaJu
+    global moverEnL
     if(MiReloj==True):
         PausarReloj = False
     if(MiTimer==True):
         PausarTimer = False
     if messagebox.askyesno("Finalizar","Seguro que desea finalizar el juego actual?"):
         ActualizarTablero = False
+        ListaJu = []
+        BunDo.config(state='disabled')
+        BreDo.config(state='disabled')
+        moverEnL = len(ListaJu)-1
         BotonGuardarJuego.config(state='disabled')
         Bnumero1.config(state="disabled")
         Bnumero2.config(state="disabled")
@@ -2643,11 +2735,11 @@ BTop10.place(x=445, y=540)
 #-------------------------------------------------------------UNDO REDO----------------------------------------------------------------------
 
 photoUndo = tk.PhotoImage(file='undo.png')
-BunDo = tk.Button(vPrincipal,image=photoUndo,bg='#F7DC6F',activebackground='#F7DC6F',bd=0,state='disabled')
+BunDo = tk.Button(vPrincipal,image=photoUndo,bg='#F7DC6F',activebackground='#F7DC6F',bd=0,state='disabled', command=lambda: MoverseEnCuadricula('<-'))
 BunDo.place(x=700,y=530)
 
 photoRedo = tk.PhotoImage(file="redo.png")
-BreDo = tk.Button(vPrincipal,image=photoRedo,bg='#F7DC6F',activebackground='#F7DC6F',bd=0,state='disabled')
+BreDo = tk.Button(vPrincipal,image=photoRedo,bg='#F7DC6F',activebackground='#F7DC6F',bd=0,state='disabled',command=lambda: MoverseEnCuadricula('->'))
 BreDo.place(x=800,y=530)
 
 if(ActualizarTablero==True):
