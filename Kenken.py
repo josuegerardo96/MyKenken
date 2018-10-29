@@ -19,6 +19,7 @@ vPrincipal.title("Kenken")
 vPrincipal.geometry("1000x630")
 vPrincipal.config(bg="#F7DC6F")
 
+
 #...........................................................................GLOBALES......................................................................... 
 mixer.init()
 avrirConfig = open('kenken_configuracion.dat','rb')
@@ -65,6 +66,29 @@ TableroFilasColumnas=ListConfig[4]
 LaCancion = ListConfig[5]
 
 multitamano = ListConfig[6]
+
+ActualizarTablero = False
+
+avrir = open('kenken_juegoactual.dat','rb')
+while True:
+    try:
+        CarLis = pickle.load(avrir)
+    except EOFError:
+        break
+avrir.close()
+
+if(CarLis!=""):
+    if(messagebox.askyesno('Cargar juego','Ha guardado un juego inconcluso\n ¿desea continuarlo?')):
+        TableroDeJuego=CarLis[0]
+        TableroFilasColumnas=CarLis[1]
+        NombreJugador=CarLis[2]
+        MisHoras = CarLis[3]
+        MisMinutos = CarLis[4]
+        MisSegundos = CarLis[5]
+        NumerosTab = CarLis[6][0]
+        CCordenadas = CarLis[6][1]
+        ActualizarTablero=True
+
 #-.....................................................................SECCION DE FUNCIONES ...............................................................
 if("MenuTable"=="MenuTable"):
     def IrAConfiguracion():
@@ -844,15 +868,33 @@ if("Relojes"=="Relojes"):
             self.min = 0
             self.hor = 0
 
+            global ActualizarTablero
+            if(ActualizarTablero ==True):
+                global MisHoras
+                global MisMinutos
+                global MisSegundos
+
+                self.seg = int(MisSegundos)
+                self.min = int(MisMinutos)
+                self.hor = int(MisHoras)
+
             self.update_Reloj()
 
         def update_Reloj(self):
             global destructor
             global destructorDerelojes
+            global MisHoras
+            global MisMinutos
+            global MisSegundos
             if(destructor == True):
                 self.seg = 0
                 self.min = 0
                 self.hor = 0
+                if(ActualizarTablero ==True):
+
+                    self.seg = int(MisSegundos)
+                    self.min = int(MisMinutos)
+                    self.hor = int(MisHoras)
                 destructor = False
             if(destructorDerelojes==True):
                 destructorDerelojes = False
@@ -885,9 +927,6 @@ if("Relojes"=="Relojes"):
                 self.LabelSegundos.configure(text=str(segundos))
                 self.LabelMinutos.configure(text=str(minutos))
                 self.LabelHoras.configure(text=str(horas))
-                global MisSegundos
-                global MisMinutos
-                global MisHoras
 
                 MisHoras = horas
                 MisMinutos = minutos
@@ -1129,23 +1168,6 @@ if("Relojes"=="Relojes"):
                         F.place(x=660,y=50)
             else:
                 self.FrameTiempo1.after(1000,self.update_Timer)
-
-def validarNombre():
-    global NombreJugador
-    global MiTimer
-    nom = EntradaNombre.get()
-    if(len(nom)>30 or len(nom)<3):
-        messagebox.showerror("Error en nombre","Debe escribir entre 3 y 30 caracteres")
-        EntradaNombre.focus()
-
-    if(len(nom)>=3 and len(nom)<=30):
-        BValidarNombre.config(state="disabled")
-        BIniciarJuego.config(state="normal")
-        EntradaNombre.config(state="disabled",disabledbackground="#3FE108", disabledforeground="#ffffff")  
-        NombreJugador = EntradaNombre.get()
-        BotonIrAConfiguracion.config(state="normal")
-        if(MiTimer == True):
-            IrAConfiguracion()
 
 if("Cuadricula"=="Cuadricula"):
     CuadriculaCeldas = tk.Frame()
@@ -1595,7 +1617,39 @@ if("Cuadricula"=="Cuadricula"):
 
                         Entrada.bind("<FocusIn>",lambda event, r=r, c=c: CasillaEnfocada(r,c))
                         Entrada.bind("<FocusOut>",lambda event,color=coloreado, r=r, c=c: CasillaDesenfocada(color,r,c))
-      
+
+        global ActualizarTablero
+        if(ActualizarTablero==True):
+            global CCordenadas
+            global NumerosTab
+            global TableroFilasColumnas
+            e = 0
+            for r in range(14):
+                for c in range(7):
+                    if(r!=0 or r%2!=0):
+                        if((r,c) in CCordenadas):
+                            q = CuadriculaCeldas.grid_slaves(row=r, column=c)[0]
+                            q.insert('end',NumerosTab[e])
+                            e = e + 1
+
+def validarNombre():
+    global NombreJugador
+    global MiTimer
+    nom = EntradaNombre.get()
+    if(len(nom)>30 or len(nom)<3):
+        messagebox.showerror("Error en nombre","Debe escribir entre 3 y 30 caracteres")
+        EntradaNombre.focus()
+
+    if(len(nom)>=3 and len(nom)<=30):
+        BValidarNombre.config(state="disabled")
+        BIniciarJuego.config(state="normal")
+        EntradaNombre.config(state="disabled",disabledbackground="#3FE108", disabledforeground="#ffffff")  
+        NombreJugador = EntradaNombre.get()
+        BotonIrAConfiguracion.config(state="normal")
+        if(MiTimer == True):
+            IrAConfiguracion()
+
+
 def AparecerReloj():
     if(MiReloj==True and MiTimer==False):
         ActualizarTiempo(vPrincipal)
@@ -2165,6 +2219,7 @@ def IniciarJuego():
     global destructor
     global MiMusica
     global Sonido
+    BotonGuardarJuego.config(state='normal')
     BIniciarJuego.config(state="disabled")
     BValidarJuego.config(state="normal")
     BOtroJuego.config(state="normal")
@@ -2196,7 +2251,7 @@ def IniciarJuego():
         mixer.music.load(LaCancion)
         mixer.music.play(-1)
     w = CuadriculaCeldas.grid_slaves(row=1,column=0)[0]
-    w.focus_set()
+    w.focus_set()    
     
 def ValidarJuego():
     global NombreJugador
@@ -2473,6 +2528,45 @@ def TerminarJuego():
         if(MiTimer==True):
             PausarTimer = True
         
+def GuardameTablero():
+    global TableroDeJuego
+    global TableroFilasColumnas
+    global NombreJugador
+    global MisHoras
+    global MisMinutos
+    global MisSegundos
+
+    NumsEntradas = []
+    listaCoordenadas = []
+    for r in range(TableroFilasColumnas[0]):
+        for c in range(TableroFilasColumnas[1]):
+            if(r!=0 and r%2!=0):
+                m = CuadriculaCeldas.grid_slaves(row=r,column=c)[0]
+                w = m.get()
+                if(w!=""):
+                    NumsEntradas.append(w)
+                    listaCoordenadas.append((r,c))
+    ListaNumCor = []
+    ListaNumCor.append(NumsEntradas)
+    ListaNumCor.append(listaCoordenadas)
+
+    Guardador = []
+    Guardador.append(TableroDeJuego)
+    Guardador.append(TableroFilasColumnas)
+    Guardador.append(NombreJugador)
+    Guardador.append(MisHoras)
+    Guardador.append(MisMinutos)
+    Guardador.append(MisSegundos)
+    Guardador.append(ListaNumCor)
+    avrir = open('kenken_juegoactual.dat','wb')
+    pickle.dump(Guardador,avrir)
+    avrir.close()
+
+def BorrajuegoTablero():
+    avrir = open('kenken_juegoactual.dat','wb')
+    pickle.dump("",avrir)
+    avrir.close()
+
 #---------------------------------------------------------TABLA MENU------------------------------------------------------------------
 
 TablaMenuArriba = tk.Frame(vPrincipal, bg="white")
@@ -2487,13 +2581,15 @@ BotonAyuda.pack(side="left")
 BotonIrAAcercaDe = tk.Button(TablaMenuArriba,bg="white", text="Acerca de", width=30,bd=0, command=AcercaDelPrograma.Acercade)
 BotonIrAAcercaDe.pack(side="left")
 
+BotonGuardarJuego = tk.Button(TablaMenuArriba,bg="white",fg="#16B800", text="Guardar partida", width=30,bd=0, command=GuardameTablero, state="disabled")
+BotonGuardarJuego.pack(side="left")
+
+BotonBorrarJuego = tk.Button(TablaMenuArriba,bg="white",fg="#16B800", text="Borrar partida guardada", width=30,bd=0, command=BorrajuegoTablero, state="disabled")
+BotonBorrarJuego.pack(side="left")
 #--------------------------------------Poner nombre--------------------------------------------------------------
 
 EntradaNombreLabel = tk.Label(vPrincipal, text="Nombre del jugador (obligatorio)", font=("Arial",8), bg="#F7DC6F")
 EntradaNombreLabel.place(x=150,y=530)
-
-EntradaNombre = tk.Entry(vPrincipal, justify="center", width=45, relief="groove", bg="#FF5733")
-EntradaNombre.place(x=100, y=550)
 
 BValidarNombre = tk.Button(vPrincipal,text="Validar usuario", width=12, relief="groove", bg="#70E349", command=validarNombre)
 BValidarNombre.place(x=190,y=575)
@@ -2520,5 +2616,10 @@ BTerminarJuego.place(x=580,y=470)
 BTop10 = tk.Button(vPrincipal, text="TOP 10", pady=10,relief="groove", width=20, bg="#FF3333", command=AbrirTop)
 BTop10.place(x=445, y=540)
 
+EntradaNombre = tk.Entry(vPrincipal, justify="center", width=45, relief="groove", bg="#FF5733")
+EntradaNombre.place(x=100, y=550)
+if(ActualizarTablero==True):
+    EntradaNombre.insert('end',NombreJugador)
+    validarNombre()
 
 vPrincipal.mainloop()
