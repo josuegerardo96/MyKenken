@@ -19,8 +19,8 @@ vPrincipal.title("Kenken")
 vPrincipal.geometry("1000x630")
 vPrincipal.config(bg="#F7DC6F")
 
-
 #...........................................................................GLOBALES......................................................................... 
+
 mixer.init()
 avrirConfig = open('kenken_configuracion.dat','rb')
 while True:
@@ -89,6 +89,7 @@ if(CarLis!=""):
         CCordenadas = CarLis[6][1]
         numeradoRandom = CarLis[7]
         ActualizarTablero=True
+        vPrincipal.focus_force()
 
 #-.....................................................................SECCION DE FUNCIONES ...............................................................
 if("MenuTable"=="MenuTable"):
