@@ -64,7 +64,7 @@ TableroDeJuego = ListConfig[3]
 TableroFilasColumnas=ListConfig[4]
 
 LaCancion = ListConfig[5]
-
+numRandom = 0
 multitamano = ListConfig[6]
 
 ActualizarTablero = False
@@ -87,6 +87,7 @@ if(CarLis!=""):
         MisSegundos = CarLis[5]
         NumerosTab = CarLis[6][0]
         CCordenadas = CarLis[6][1]
+        numeradoRandom = CarLis[7]
         ActualizarTablero=True
 
 #-.....................................................................SECCION DE FUNCIONES ...............................................................
@@ -1382,6 +1383,7 @@ if("Cuadricula"=="Cuadricula"):
                 contaDic = contaDic+1
 
     def GeneradorJuego():
+        global numRandom
         avrir = open('kenken_juegos.dat','rb')
         while True:
             try:
@@ -1390,6 +1392,7 @@ if("Cuadricula"=="Cuadricula"):
                 break
         avrir.close()
         global TableroDeJuego
+        global numRandom
         if(TableroDeJuego=='3x3'):
             numRandom = random.randint(0,2)
         elif(TableroDeJuego=='4x4'):
@@ -1405,7 +1408,10 @@ if("Cuadricula"=="Cuadricula"):
         elif(TableroDeJuego=='9x9'):
             numRandom = random.randint(17,18)
         global JuegoActual
-        JuegoActual = JuegosDeKenken[numRandom]
+        global numeradoRandom
+        if(ActualizarTablero==True):
+            numRandom = numeradoRandom
+        JuegoActual=JuegosDeKenken[numRandom]
         return JuegoActual
 
     def GeneradorJuego2(otro):
@@ -2377,11 +2383,13 @@ def OtroJuego():
     global TableroDeJuego
     global botonSoluciones
     global multitamano
+    global ActualizarTablero
     if(MiReloj==True):
         PausarReloj = False
     if(MiTimer==True):
         PausarTimer = False
     if messagebox.askyesno("Otra partida","Seguro que desea iniciar una partida nueva?"):
+        ActualizarTablero = False
         botonSoluciones.destroy()
         if(multitamano!='mutamON'):
             if(MiReloj==True):
@@ -2429,11 +2437,13 @@ def ReiniciarJuego():
     global destructor
     global botonSoluciones
     global multitamano
+    global ActualizarTablero
     if(MiReloj==True):
         PausarReloj = False
     if(MiTimer==True):
         PausarTimer = False
     if messagebox.askyesno("Reiniciar","Seguro que desea reiniciar esta partida?"):
+        ActualizarTablero = False
         botonSoluciones.destroy()
         if(multitamano!='mutamON'):
             if(MiReloj==True):
@@ -2479,11 +2489,14 @@ def TerminarJuego():
     global CuadriculaCeldas
     global TableroFilasColumnas
     global botonSoluciones
+    global ActualizarTablero
     if(MiReloj==True):
         PausarReloj = False
     if(MiTimer==True):
         PausarTimer = False
     if messagebox.askyesno("Finalizar","Seguro que desea finalizar el juego actual?"):
+        ActualizarTablero = False
+        BotonGuardarJuego.config(state='disabled')
         Bnumero1.config(state="disabled")
         Bnumero2.config(state="disabled")
         Bnumero3.config(state="disabled")
@@ -2535,6 +2548,7 @@ def GuardameTablero():
     global MisHoras
     global MisMinutos
     global MisSegundos
+    global numRandom
 
     NumsEntradas = []
     listaCoordenadas = []
@@ -2558,8 +2572,12 @@ def GuardameTablero():
     Guardador.append(MisMinutos)
     Guardador.append(MisSegundos)
     Guardador.append(ListaNumCor)
+    Guardador.append(numRandom)
     avrir = open('kenken_juegoactual.dat','wb')
-    pickle.dump(Guardador,avrir)
+    if(NumsEntradas==[] and listaCoordenadas==[]):
+        pickle.dump("",avrir)
+    else:
+        pickle.dump(Guardador,avrir)
     avrir.close()
 
 def BorrajuegoTablero():
@@ -2581,10 +2599,10 @@ BotonAyuda.pack(side="left")
 BotonIrAAcercaDe = tk.Button(TablaMenuArriba,bg="white", text="Acerca de", width=30,bd=0, command=AcercaDelPrograma.Acercade)
 BotonIrAAcercaDe.pack(side="left")
 
-BotonGuardarJuego = tk.Button(TablaMenuArriba,bg="white",fg="#16B800", text="Guardar partida", width=30,bd=0, command=GuardameTablero, state="disabled")
+BotonGuardarJuego = tk.Button(TablaMenuArriba,bg="white",font=('Helvetica',10,'italic bold'),fg="#46B800", text="Guardar partida", width=20,bd=0, command=GuardameTablero, state="disabled")
 BotonGuardarJuego.pack(side="left")
 
-BotonBorrarJuego = tk.Button(TablaMenuArriba,bg="white",fg="#16B800", text="Borrar partida guardada", width=30,bd=0, command=BorrajuegoTablero, state="disabled")
+BotonBorrarJuego = tk.Button(TablaMenuArriba,bg="white",font=('Helvetica',10,'italic bold'),fg="#B60000", text="Borrar partida guardada", width=20,bd=0, command=BorrajuegoTablero)
 BotonBorrarJuego.pack(side="left")
 #--------------------------------------Poner nombre--------------------------------------------------------------
 
