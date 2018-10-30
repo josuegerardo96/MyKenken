@@ -2624,6 +2624,8 @@ def TerminarJuego():
     global ActualizarTablero
     global ListaJu
     global moverEnL
+    global TableroDeJuego
+    global multitamano
     if(MiReloj==True):
         PausarReloj = False
     if(MiTimer==True):
@@ -2665,6 +2667,8 @@ def TerminarJuego():
         BOtroJuego.config(state="disabled")
         BReiniciarJuego.config(state="disabled")
         BTerminarJuego.config(state="disabled")
+        if(multitamano=='mutamON'):
+            TableroDeJuego='3x3'
         if(MiTimer==True or MiReloj==True):
             BotonPausarTiempo.destroy()
         if(Sonido=="ConSonido"):
