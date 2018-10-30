@@ -837,7 +837,7 @@ if("MenuTable"=="MenuTable"):
 
     class AyudaAlUsuario:
         def IrAlManual():
-            webbrowser.open_new(r"https://drive.google.com/open?id=1KDZcxPOQneB4mA43FfZ1Nx2qnRT_4vAX")
+            webbrowser.open_new(r"https://drive.google.com/open?id=1SOom2RBsipHADO1enBSEfJBi0Gv-QG2o")
 
         def IrAAcercaDe():            
             vAyuda = tk.Toplevel()
@@ -1480,7 +1480,6 @@ if("Cuadricula"=="Cuadricula"):
                 break
         avrir.close()
         global TableroDeJuego
-        global numRandom
         if(TableroDeJuego=='3x3'):
             numRandom = random.randint(0,2)
         elif(TableroDeJuego=='4x4'):
@@ -1497,6 +1496,7 @@ if("Cuadricula"=="Cuadricula"):
             numRandom = random.randint(17,18)
         global JuegoActual
         global numeradoRandom
+        global ActualizarTablero
         if(ActualizarTablero==True):
             numRandom = numeradoRandom
         JuegoActual=JuegosDeKenken[numRandom]
@@ -2400,7 +2400,6 @@ def ValidarJuego():
         if(multitamano=='mutamON' and TableroDeJuego!='9x9'):
             BotonGuardarJuego.config(state='normal')
             for r in range(TableroFilasColumnas[0]):
-                lista = []
                 for c in range(TableroFilasColumnas[1]):
                     if(r!=0 and r%2!=0):
                         DatoEnEntrada = CuadriculaCeldas.grid_slaves(row=r,column=c)[0]
@@ -2414,6 +2413,7 @@ def ValidarJuego():
             TableroFilasColumnas.pop(0)
             TableroFilasColumnas.append(actualTablero*2)
             TableroFilasColumnas.append(actualTablero)
+            ActualizarTablero = False
             Cuadricula(GeneradorJuego())
             if(MiReloj==True):
                 AparecerPausador()
@@ -2687,6 +2687,7 @@ def GuardameTablero():
     global MisMinutos
     global MisSegundos
     global numRandom
+    global multitamano
     NumsEntradas = []
     listaCoordenadas = []
     for r in range(TableroFilasColumnas[0]):
@@ -2711,7 +2712,7 @@ def GuardameTablero():
     Guardador.append(ListaNumCor)
     Guardador.append(numRandom)
     avrir = open('kenken_juegoactual.dat','wb')
-    if(NumsEntradas==[] and listaCoordenadas==[]):
+    if(NumsEntradas==[] and listaCoordenadas==[] and multitamano!='mutamON'):
         pickle.dump("",avrir)
     else:
         pickle.dump(Guardador,avrir)
