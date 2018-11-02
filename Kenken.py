@@ -837,7 +837,7 @@ if("MenuTable"=="MenuTable"):
 
     class AyudaAlUsuario:
         def IrAlManual():
-            webbrowser.open_new(r"https://drive.google.com/open?id=1SOom2RBsipHADO1enBSEfJBi0Gv-QG2o")
+            webbrowser.open_new(r"https://drive.google.com/open?id=1oqpih3cAANK1oIg0L-BTNut-zJd2Y_ke")
 
         def IrAAcercaDe():            
             vAyuda = tk.Toplevel()
@@ -1511,6 +1511,7 @@ if("Cuadricula"=="Cuadricula"):
                 break
         avrir.close()
         global TableroDeJuego
+        global numRandom
         if(TableroDeJuego=='3x3'):
             numRandom = random.randint(0,2)
         elif(TableroDeJuego=='4x4'):
@@ -2333,6 +2334,7 @@ def IniciarJuego():
     global destructor
     global MiMusica
     global Sonido
+    solucioname.config(state='normal')
     BotonGuardarJuego.config(state='normal')
     BIniciarJuego.config(state="disabled")
     BValidarJuego.config(state="normal")
@@ -2632,6 +2634,7 @@ def TerminarJuego():
         PausarTimer = False
     if messagebox.askyesno("Finalizar","Seguro que desea finalizar el juego actual?"):
         ActualizarTablero = False
+        solucioname.config(state='disabled')
         ListaJu = []
         BunDo.config(state='disabled')
         BreDo.config(state='disabled')
@@ -2727,6 +2730,27 @@ def BorrajuegoTablero():
     pickle.dump("",avrir)
     avrir.close()
 
+def SolucionarKenkenActual():
+    global TableroFilasColumnas
+    global numRandom
+    avrir = open('soluciones.dat','rb')
+    while True:
+        try:
+            jugadas=pickle.load(avrir)
+        except EOFError:
+            break
+    solucionActual = jugadas[numRandom]
+    sol = 0
+    for r in range(TableroFilasColumnas[0]):
+        for c in range(TableroFilasColumnas[1]):
+            if(r!=0 and r%2!=0):
+                cua = CuadriculaCeldas.grid_slaves(row=r,column=c)[0]
+                cua.delete('0','end')
+                cua.insert('end',str(solucionActual[sol]))
+                sol = sol + 1
+    ActualizarActualT()
+
+
 #---------------------------------------------------------TABLA MENU------------------------------------------------------------------
 
 TablaMenuArriba = tk.Frame(vPrincipal, bg="white")
@@ -2790,6 +2814,10 @@ BunDo.place(x=700,y=530)
 photoRedo = tk.PhotoImage(file="redo.png")
 BreDo = tk.Button(vPrincipal,image=photoRedo,bg='#F7DC6F',activebackground='#F7DC6F',bd=0,state='disabled',command=lambda: MoverseEnCuadricula('->'))
 BreDo.place(x=800,y=530)
+
+duda = tk.PhotoImage(file='nose.png')
+solucioname = tk.Button(vPrincipal,image=duda,bg='#F7DC6F',activebackground='#F7DC6F',bd=0, state='disabled',command=SolucionarKenkenActual)
+solucioname.place(x=940,y=580)
 
 if(ActualizarTablero==True):
     EntradaNombre.insert('end',NombreJugador)
